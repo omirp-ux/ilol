@@ -41,12 +41,21 @@ jobs:
           key: buildozer-${{ hashFiles('buildozer.spec') }}
           restore-keys: buildozer-
 
+      - name: Aceitar licenças do Android SDK
+        run: |
+          mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+          printf '\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nd56f5187479451eabf01fb78af6dfcb131a6481e\n' \
+            > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+          printf '\n84831b9409646a918e30573bab4c9c91346d8abd\n' \
+            > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
+          printf '\n33b6937684c63422b741b521fea99ca3bdc49e93\n' \
+            > ~/.buildozer/android/platform/android-sdk/licenses/android-googletv-license
+
       - name: Build APK
         run: |
           set -o pipefail
           buildozer -v android debug 2>&1 | tee build.log
 
-      # Log sobe SEMPRE — independente de sucesso ou falha
       - name: Upload log
         if: always()
         uses: actions/upload-artifact@v4
