@@ -1,0 +1,2754 @@
+{
+    "1001": {
+        "nome": "Botas",
+        "preco": 300
+    },
+    "1004": {
+        "nome": "Amuleto da Fada",
+        "preco": 200
+    },
+    "1006": {
+        "nome": "Pérola do Rejuvenescimento",
+        "preco": 300
+    },
+    "1011": {
+        "nome": "Cinto do Gigante",
+        "preco": 900
+    },
+    "1018": {
+        "nome": "Capa da Agilidade",
+        "preco": 600
+    },
+    "1026": {
+        "nome": "Varinha Explosiva",
+        "preco": 850
+    },
+    "1027": {
+        "nome": "Cristal de Safira",
+        "preco": 300
+    },
+    "1028": {
+        "nome": "Cristal de Rubi",
+        "preco": 400
+    },
+    "1029": {
+        "nome": "Couraça de Pano",
+        "preco": 300
+    },
+    "1031": {
+        "nome": "Cota de Malha",
+        "preco": 800
+    },
+    "1033": {
+        "nome": "Manto Anula-Magia",
+        "preco": 400
+    },
+    "1035": {
+        "nome": "Lâmina Cálida",
+        "preco": 350
+    },
+    "1036": {
+        "nome": "Espada Longa",
+        "preco": 350
+    },
+    "1037": {
+        "nome": "Picareta",
+        "preco": 875
+    },
+    "1038": {
+        "nome": "Espada G. p. C.",
+        "preco": 1300
+    },
+    "1039": {
+        "nome": "Lâmina Álgida",
+        "preco": 350
+    },
+    "1040": {
+        "nome": "Lâmina de Obsidiana",
+        "preco": 350
+    },
+    "1042": {
+        "nome": "Adaga",
+        "preco": 250
+    },
+    "1043": {
+        "nome": "Arco Recurvo",
+        "preco": 700
+    },
+    "1052": {
+        "nome": "Tomo Amplificador",
+        "preco": 400
+    },
+    "1053": {
+        "nome": "Cetro Vampírico",
+        "preco": 900
+    },
+    "1054": {
+        "nome": "Escudo de Doran",
+        "preco": 450
+    },
+    "1055": {
+        "nome": "Lâmina de Doran",
+        "preco": 450
+    },
+    "1056": {
+        "nome": "Anel de Doran",
+        "preco": 400
+    },
+    "1057": {
+        "nome": "Capa Negatron",
+        "preco": 850
+    },
+    "1058": {
+        "nome": "Bastão Desnecessariamente Grande",
+        "preco": 1200
+    },
+    "1082": {
+        "nome": "Lacre Sombrio",
+        "preco": 350
+    },
+    "1083": {
+        "nome": "Abatedora",
+        "preco": 450
+    },
+    "1090": {
+        "nome": "Missão: rota superior",
+        "preco": 0
+    },
+    "1091": {
+        "nome": "Missão: rota do meio",
+        "preco": 0
+    },
+    "1092": {
+        "nome": "Missão: rota inferior",
+        "preco": 0
+    },
+    "1093": {
+        "nome": "Missão: suporte",
+        "preco": 0
+    },
+    "1094": {
+        "nome": "Missão: selva",
+        "preco": 0
+    },
+    "1101": {
+        "nome": "Filhote de Garrabrasa",
+        "preco": 450
+    },
+    "1102": {
+        "nome": "Cria de Andabrisas",
+        "preco": 450
+    },
+    "1103": {
+        "nome": "Broto de Esmagamusgo",
+        "preco": 450
+    },
+    "1104": {
+        "nome": "Olho do Arauto",
+        "preco": 0
+    },
+    "1105": {
+        "nome": "Broto de Esmagamusgo",
+        "preco": 450
+    },
+    "1106": {
+        "nome": "Cria de Andabrisas",
+        "preco": 450
+    },
+    "1107": {
+        "nome": "Filhote de Garrabrasa",
+        "preco": 450
+    },
+    "1111": {
+        "nome": "Jarvan I",
+        "preco": 300
+    },
+    "1200": {
+        "nome": "Missão da rota superior",
+        "preco": 0
+    },
+    "1201": {
+        "nome": "Missão da rota do meio",
+        "preco": 0
+    },
+    "1202": {
+        "nome": "Missão da rota inferior",
+        "preco": 0
+    },
+    "1203": {
+        "nome": "Missão de suporte",
+        "preco": 0
+    },
+    "1204": {
+        "nome": "Missão da selva",
+        "preco": 0
+    },
+    "1205": {
+        "nome": "",
+        "preco": 0
+    },
+    "1206": {
+        "nome": "Missão da rota do meio",
+        "preco": 0
+    },
+    "1207": {
+        "nome": "Missão da rota inferior",
+        "preco": 0
+    },
+    "1208": {
+        "nome": "Missão de suporte",
+        "preco": 0
+    },
+    "1209": {
+        "nome": "Missão da selva",
+        "preco": 0
+    },
+    "1220": {
+        "nome": "Teleporte Irrestrito",
+        "preco": 0
+    },
+    "1221": {
+        "nome": "Missão da rota superior",
+        "preco": 0
+    },
+    "1222": {
+        "nome": "Missão da rota superior",
+        "preco": 0
+    },
+    "123430": {
+        "nome": "Ritual da Ruína",
+        "preco": 3000
+    },
+    "124011": {
+        "nome": "Espada da Alvorada Florescente",
+        "preco": 2350
+    },
+    "126697": {
+        "nome": "Húbris",
+        "preco": 2950
+    },
+    "1500": {
+        "nome": "Projétil Perfurante",
+        "preco": 0
+    },
+    "1501": {
+        "nome": "Fortificação",
+        "preco": 0
+    },
+    "1502": {
+        "nome": "Armadura Reforçada",
+        "preco": 0
+    },
+    "1503": {
+        "nome": "Olho do Vigia",
+        "preco": 0
+    },
+    "1504": {
+        "nome": "Vanguarda",
+        "preco": 0
+    },
+    "1505": {
+        "nome": "Armadura Reforçada",
+        "preco": 0
+    },
+    "1506": {
+        "nome": "Armadura Reforçada",
+        "preco": 0
+    },
+    "1507": {
+        "nome": "Sobrecarga",
+        "preco": 0
+    },
+    "1508": {
+        "nome": "Meias Antitorre",
+        "preco": 0
+    },
+    "1509": {
+        "nome": "Entusiasmo",
+        "preco": 0
+    },
+    "1510": {
+        "nome": "Entusiasmo Sem Noção",
+        "preco": 0
+    },
+    "1511": {
+        "nome": "Armadura Super Mech",
+        "preco": 0
+    },
+    "1512": {
+        "nome": "Campo de Força Super Mech",
+        "preco": 0
+    },
+    "1515": {
+        "nome": "Barricada da Torre",
+        "preco": 0
+    },
+    "1516": {
+        "nome": "Recompensa de estrutura",
+        "preco": 0
+    },
+    "1517": {
+        "nome": "Recompensa de estrutura",
+        "preco": 0
+    },
+    "1518": {
+        "nome": "Recompensa de estrutura",
+        "preco": 0
+    },
+    "1519": {
+        "nome": "Recompensa de estrutura",
+        "preco": 0
+    },
+    "1520": {
+        "nome": "SobrecarregadoHA",
+        "preco": 0
+    },
+    "1521": {
+        "nome": "Fortificação",
+        "preco": 0
+    },
+    "1522": {
+        "nome": "Fortalecimento de Torre",
+        "preco": 0
+    },
+    "1523": {
+        "nome": "Sobrecarga",
+        "preco": 0
+    },
+    "1524": {
+        "nome": "Crescimento",
+        "preco": 0
+    },
+    "2001": {
+        "nome": "Retorno",
+        "preco": 60
+    },
+    "2002": {
+        "nome": "Retorno aprimorado",
+        "preco": 60
+    },
+    "2003": {
+        "nome": "Poção de Vida",
+        "preco": 50
+    },
+    "2007": {
+        "nome": "Retorno Desabilitado",
+        "preco": 60
+    },
+    "2008": {
+        "nome": "",
+        "preco": 60
+    },
+    "2010": {
+        "nome": "Biscoito Total da Determinação Eterna",
+        "preco": 50
+    },
+    "2015": {
+        "nome": "Estilhaço de Kircheis",
+        "preco": 700
+    },
+    "2019": {
+        "nome": "Sigilo de Aço",
+        "preco": 1100
+    },
+    "2020": {
+        "nome": "Brutalizador",
+        "preco": 1337
+    },
+    "2021": {
+        "nome": "Tunelizador",
+        "preco": 1150
+    },
+    "2022": {
+        "nome": "Partícula Brilhante",
+        "preco": 250
+    },
+    "2031": {
+        "nome": "Poção com Refil",
+        "preco": 150
+    },
+    "2033": {
+        "nome": "Poção Corrupta",
+        "preco": 500
+    },
+    "2049": {
+        "nome": "Amuleto do Guardião",
+        "preco": 500
+    },
+    "2050": {
+        "nome": "Proteção do Guardião",
+        "preco": 500
+    },
+    "2051": {
+        "nome": "Berrante do Guardião",
+        "preco": 950
+    },
+    "2052": {
+        "nome": "Poritos",
+        "preco": 0
+    },
+    "2055": {
+        "nome": "Sentinela de Controle",
+        "preco": 75
+    },
+    "2056": {
+        "nome": "Sentinela Invisível",
+        "preco": 40
+    },
+    "2065": {
+        "nome": "Hino Bélico de Shurelya",
+        "preco": 2200
+    },
+    "2138": {
+        "nome": "Elixir de Ferro",
+        "preco": 500
+    },
+    "2139": {
+        "nome": "Elixir da Feitiçaria",
+        "preco": 500
+    },
+    "2140": {
+        "nome": "Elixir da Ira",
+        "preco": 500
+    },
+    "2141": {
+        "nome": "Suco de Chapéu",
+        "preco": 300
+    },
+    "2142": {
+        "nome": "Suco de Poder",
+        "preco": 500
+    },
+    "2143": {
+        "nome": "Suco de Vigor",
+        "preco": 500
+    },
+    "2144": {
+        "nome": "Suco de Aceleração",
+        "preco": 500
+    },
+    "2145": {
+        "nome": "Dado da Sorte",
+        "preco": 0
+    },
+    "2146": {
+        "nome": "Dado da Sorte Aprimorado",
+        "preco": 0
+    },
+    "2150": {
+        "nome": "Elixir da Habilidade",
+        "preco": 0
+    },
+    "2151": {
+        "nome": "Elixir da Avareza",
+        "preco": 50
+    },
+    "2152": {
+        "nome": "Elixir da Força",
+        "preco": 50
+    },
+    "2161": {
+        "nome": "Suco de Poder de Bandópolis",
+        "preco": 1000
+    },
+    "2162": {
+        "nome": "Suco de Vigor de Bandópolis",
+        "preco": 1000
+    },
+    "2163": {
+        "nome": "Suco de Aceleração de Bandópolis",
+        "preco": 1000
+    },
+    "220000": {
+        "nome": "Atributo adicional",
+        "preco": 750
+    },
+    "220001": {
+        "nome": "Item Lendário de Lutador",
+        "preco": 2000
+    },
+    "220002": {
+        "nome": "Item Lendário de Atirador",
+        "preco": 2000
+    },
+    "220003": {
+        "nome": "Item Lendário de Assassino",
+        "preco": 2000
+    },
+    "220004": {
+        "nome": "Item Lendário de Mago",
+        "preco": 2000
+    },
+    "220005": {
+        "nome": "Item Lendário de Tanque",
+        "preco": 2000
+    },
+    "220006": {
+        "nome": "Item Lendário de Suporte",
+        "preco": 2000
+    },
+    "220007": {
+        "nome": "Item Prismático",
+        "preco": 4000
+    },
+    "220008": {
+        "nome": "Cupom de Bigorna",
+        "preco": 750
+    },
+    "220009": {
+        "nome": "Cupom de Bigorna de Atributo Ouro",
+        "preco": 750
+    },
+    "220010": {
+        "nome": "Cupom de Atributo Prismático",
+        "preco": 750
+    },
+    "220011": {
+        "nome": "Cupom de Bravura",
+        "preco": 750
+    },
+    "221011": {
+        "nome": "Cinto do Gigante",
+        "preco": 500
+    },
+    "221026": {
+        "nome": "Varinha Explosiva",
+        "preco": 500
+    },
+    "221031": {
+        "nome": "Cota de Malha",
+        "preco": 500
+    },
+    "221038": {
+        "nome": "Espada G. p. C.",
+        "preco": 1300
+    },
+    "221043": {
+        "nome": "Arco Recurvo",
+        "preco": 500
+    },
+    "221053": {
+        "nome": "Cetro Vampírico",
+        "preco": 500
+    },
+    "221057": {
+        "nome": "Capa Negatron",
+        "preco": 450
+    },
+    "221058": {
+        "nome": "Bastão Desnecessariamente Grande",
+        "preco": 500
+    },
+    "222022": {
+        "nome": "Partícula Brilhante",
+        "preco": 250
+    },
+    "222051": {
+        "nome": "Berrante do Guardião",
+        "preco": 500
+    },
+    "222065": {
+        "nome": "Hino Bélico de Shurelya",
+        "preco": 2500
+    },
+    "222141": {
+        "nome": "Suco de Chapéu",
+        "preco": 500
+    },
+    "222502": {
+        "nome": "Desespero Eterno",
+        "preco": 2500
+    },
+    "222503": {
+        "nome": "Tocha de Chamas Negras",
+        "preco": 2500
+    },
+    "222504": {
+        "nome": "Rookern Lamúrico",
+        "preco": 2500
+    },
+    "222510": {
+        "nome": "Aurora e Crepúsculo",
+        "preco": 2500
+    },
+    "222512": {
+        "nome": "Dardos de Caça-Demônios",
+        "preco": 2500
+    },
+    "222517": {
+        "nome": "Fome Eterna",
+        "preco": 2500
+    },
+    "222522": {
+        "nome": "Atualizador",
+        "preco": 2500
+    },
+    "222523": {
+        "nome": "Hexótica C44",
+        "preco": 2500
+    },
+    "222524": {
+        "nome": "Bandocanos",
+        "preco": 2500
+    },
+    "222525": {
+        "nome": "Couraça Protoplasmática",
+        "preco": 2500
+    },
+    "222526": {
+        "nome": "Tiara Sussurrante",
+        "preco": 2500
+    },
+    "222530": {
+        "nome": "Diadema de Canções",
+        "preco": 2500
+    },
+    "223001": {
+        "nome": "Proteção Imutável",
+        "preco": 2500
+    },
+    "223002": {
+        "nome": "Desbravador",
+        "preco": 2500
+    },
+    "223003": {
+        "nome": "Cajado do Arcanjo",
+        "preco": 2500
+    },
+    "223004": {
+        "nome": "Manamune",
+        "preco": 2500
+    },
+    "223005": {
+        "nome": "Ghostcrawlers",
+        "preco": 500
+    },
+    "223006": {
+        "nome": "Grevas do Berserker",
+        "preco": 500
+    },
+    "223009": {
+        "nome": "Botas da Rapidez",
+        "preco": 500
+    },
+    "223011": {
+        "nome": "Putrificador Quimtec",
+        "preco": 1900
+    },
+    "223020": {
+        "nome": "Sapatos do Feiticeiro",
+        "preco": 500
+    },
+    "223026": {
+        "nome": "Anjo Guardião",
+        "preco": 2500
+    },
+    "223031": {
+        "nome": "Gume do Infinito",
+        "preco": 2500
+    },
+    "223032": {
+        "nome": "Flechatroz de Yun Tal",
+        "preco": 2500
+    },
+    "223033": {
+        "nome": "Lembrete Mortal",
+        "preco": 2500
+    },
+    "223036": {
+        "nome": "Lembranças do Lorde Dominik",
+        "preco": 2500
+    },
+    "223039": {
+        "nome": "Acerto de Contas de Atma",
+        "preco": 2500
+    },
+    "223040": {
+        "nome": "Abraço de Seraph",
+        "preco": 2500
+    },
+    "223042": {
+        "nome": "Muramana",
+        "preco": 2500
+    },
+    "223046": {
+        "nome": "Dançarina Fantasma",
+        "preco": 2500
+    },
+    "223047": {
+        "nome": "Botas Galvanizadas de Aço",
+        "preco": 500
+    },
+    "223050": {
+        "nome": "Convergência de Zeke",
+        "preco": 2500
+    },
+    "223053": {
+        "nome": "Sinal de Sterak",
+        "preco": 2500
+    },
+    "223057": {
+        "nome": "Fulgor",
+        "preco": 2500
+    },
+    "223065": {
+        "nome": "Semblante Espiritual",
+        "preco": 2500
+    },
+    "223067": {
+        "nome": "Gema Ardente",
+        "preco": 500
+    },
+    "223068": {
+        "nome": "Égide de Fogo Solar",
+        "preco": 2500
+    },
+    "223069": {
+        "nome": "Imolação do Vazio",
+        "preco": 6000
+    },
+    "223071": {
+        "nome": "Cutelo Negro",
+        "preco": 2500
+    },
+    "223072": {
+        "nome": "Sedenta por Sangue",
+        "preco": 2500
+    },
+    "223073": {
+        "nome": "Hexoplaca Experimental",
+        "preco": 2500
+    },
+    "223074": {
+        "nome": "Hidra Raivosa",
+        "preco": 2500
+    },
+    "223075": {
+        "nome": "Armadura de Espinhos",
+        "preco": 2500
+    },
+    "223078": {
+        "nome": "Força da Trindade",
+        "preco": 2500
+    },
+    "223084": {
+        "nome": "Coração de Aço",
+        "preco": 2500
+    },
+    "223085": {
+        "nome": "Furacão de Runaan",
+        "preco": 2500
+    },
+    "223087": {
+        "nome": "Faca de Statikk",
+        "preco": 2500
+    },
+    "223089": {
+        "nome": "Capuz da Morte de Rabadon",
+        "preco": 2500
+    },
+    "223091": {
+        "nome": "Limite da Razão",
+        "preco": 2500
+    },
+    "223094": {
+        "nome": "Canhão Fumegante",
+        "preco": 2500
+    },
+    "223095": {
+        "nome": "Chuva de Canivete",
+        "preco": 2500
+    },
+    "223100": {
+        "nome": "Perdição de Lich",
+        "preco": 2500
+    },
+    "223102": {
+        "nome": "Véu da Banshee",
+        "preco": 2500
+    },
+    "223105": {
+        "nome": "Égide da Legião",
+        "preco": 500
+    },
+    "223107": {
+        "nome": "Redenção",
+        "preco": 2500
+    },
+    "223109": {
+        "nome": "Juramento do Cavaleiro",
+        "preco": 2500
+    },
+    "223110": {
+        "nome": "Coração Congelado",
+        "preco": 2500
+    },
+    "223111": {
+        "nome": "Passos de Mercúrio",
+        "preco": 500
+    },
+    "223112": {
+        "nome": "Orbe do Guardião",
+        "preco": 500
+    },
+    "223115": {
+        "nome": "Dente de Na'Shor",
+        "preco": 2500
+    },
+    "223116": {
+        "nome": "Cetro de Cristal de Rylai",
+        "preco": 2500
+    },
+    "223118": {
+        "nome": "Malevolência",
+        "preco": 2500
+    },
+    "223119": {
+        "nome": "Aproximação Invernal",
+        "preco": 2500
+    },
+    "223121": {
+        "nome": "Fimbulwinter",
+        "preco": 2500
+    },
+    "223124": {
+        "nome": "Lâmina da Fúria de Guinsoo",
+        "preco": 2500
+    },
+    "223135": {
+        "nome": "Cajado do Vazio",
+        "preco": 2500
+    },
+    "223137": {
+        "nome": "Criptoflora",
+        "preco": 2500
+    },
+    "223139": {
+        "nome": "Cimitarra Mercurial",
+        "preco": 2500
+    },
+    "223142": {
+        "nome": "Lâmina Fantasma de Youmuu",
+        "preco": 2500
+    },
+    "223143": {
+        "nome": "Presságio de Randuin",
+        "preco": 2500
+    },
+    "223146": {
+        "nome": "Pistola Laminar Hextec",
+        "preco": 2500
+    },
+    "223152": {
+        "nome": "Explocinturão Hextec",
+        "preco": 2500
+    },
+    "223153": {
+        "nome": "Espada do Rei Destruído",
+        "preco": 2500
+    },
+    "223156": {
+        "nome": "Mandíbula de Malmortius",
+        "preco": 2500
+    },
+    "223157": {
+        "nome": "Ampulheta de Zhonya",
+        "preco": 2500
+    },
+    "223158": {
+        "nome": "Botas Ionianas da Lucidez",
+        "preco": 500
+    },
+    "223161": {
+        "nome": "Lança de Shojin",
+        "preco": 2500
+    },
+    "223165": {
+        "nome": "Morellonomicon",
+        "preco": 2500
+    },
+    "223172": {
+        "nome": "Zéfiro",
+        "preco": 2500
+    },
+    "223177": {
+        "nome": "Lâmina do Guardião",
+        "preco": 500
+    },
+    "223181": {
+        "nome": "Quebracascos",
+        "preco": 2500
+    },
+    "223184": {
+        "nome": "Martelo do Guardião",
+        "preco": 500
+    },
+    "223185": {
+        "nome": "Punhal do Guardião",
+        "preco": 500
+    },
+    "223190": {
+        "nome": "Medalhão dos Solari de Ferro",
+        "preco": 2500
+    },
+    "223193": {
+        "nome": "Placa Gargolítica",
+        "preco": 2500
+    },
+    "223222": {
+        "nome": "Bênção de Mikael",
+        "preco": 2500
+    },
+    "223302": {
+        "nome": "Terminus",
+        "preco": 2500
+    },
+    "223504": {
+        "nome": "Turíbulo Ardente",
+        "preco": 2500
+    },
+    "223508": {
+        "nome": "Colhedor de Essência",
+        "preco": 2500
+    },
+    "223742": {
+        "nome": "Couraça do Defunto",
+        "preco": 2500
+    },
+    "223748": {
+        "nome": "Hidra Titânica",
+        "preco": 2500
+    },
+    "223814": {
+        "nome": "Limiar da Noite",
+        "preco": 2500
+    },
+    "224004": {
+        "nome": "Alfanje Espectral",
+        "preco": 2500
+    },
+    "224005": {
+        "nome": "Mandato Imperial",
+        "preco": 2500
+    },
+    "224401": {
+        "nome": "Força da Natureza",
+        "preco": 2500
+    },
+    "224403": {
+        "nome": "Espátula Dourada",
+        "preco": 2500
+    },
+    "224628": {
+        "nome": "Foco do Horizonte",
+        "preco": 2500
+    },
+    "224629": {
+        "nome": "Ímpeto Cósmico",
+        "preco": 2500
+    },
+    "224633": {
+        "nome": "Criafendas",
+        "preco": 2500
+    },
+    "224636": {
+        "nome": "Colhedor Noturno",
+        "preco": 2500
+    },
+    "224637": {
+        "nome": "Abraço Demoníaco",
+        "preco": 2500
+    },
+    "224644": {
+        "nome": "Coroa da Rainha Despedaçada",
+        "preco": 2500
+    },
+    "224645": {
+        "nome": "Chama Sombria",
+        "preco": 2500
+    },
+    "224646": {
+        "nome": "Ápice da Tempestade",
+        "preco": 2500
+    },
+    "226035": {
+        "nome": "Alvorada de Pratânia",
+        "preco": 2500
+    },
+    "226333": {
+        "nome": "Dança da Morte",
+        "preco": 2500
+    },
+    "226609": {
+        "nome": "Serrespada Quimiopunk",
+        "preco": 2500
+    },
+    "226610": {
+        "nome": "Céu Dividido",
+        "preco": 2500
+    },
+    "226616": {
+        "nome": "Cajado Aquafluxo",
+        "preco": 2500
+    },
+    "226617": {
+        "nome": "Regenerador de Pedra Lunar",
+        "preco": 2500
+    },
+    "226620": {
+        "nome": "Ecos de Helia",
+        "preco": 2500
+    },
+    "226621": {
+        "nome": "Auronúcleo",
+        "preco": 2500
+    },
+    "226630": {
+        "nome": "Hemodrenário",
+        "preco": 1000
+    },
+    "226631": {
+        "nome": "Quebrapassos",
+        "preco": 2500
+    },
+    "226632": {
+        "nome": "Ruptor Divino",
+        "preco": 2500
+    },
+    "226653": {
+        "nome": "Angústia de Liandry",
+        "preco": 2500
+    },
+    "226655": {
+        "nome": "Eco de Luden",
+        "preco": 2500
+    },
+    "226656": {
+        "nome": "Glacieterno",
+        "preco": 2500
+    },
+    "226657": {
+        "nome": "Bastão das Eras",
+        "preco": 2500
+    },
+    "226662": {
+        "nome": "Manopla dos Glacinatas",
+        "preco": 2500
+    },
+    "226664": {
+        "nome": "Resplendor Vazio",
+        "preco": 2500
+    },
+    "226665": {
+        "nome": "Jak'Sho, o Inconstante",
+        "preco": 2500
+    },
+    "226667": {
+        "nome": "Virtude Radiante",
+        "preco": 2500
+    },
+    "226671": {
+        "nome": "Força do Vendaval",
+        "preco": 2500
+    },
+    "226672": {
+        "nome": "Mata-Cráquens",
+        "preco": 2500
+    },
+    "226673": {
+        "nome": "Arco-escudo Imortal",
+        "preco": 2500
+    },
+    "226675": {
+        "nome": "Adagas Oscilantes Navori",
+        "preco": 2500
+    },
+    "226676": {
+        "nome": "A Coletora",
+        "preco": 2500
+    },
+    "226691": {
+        "nome": "Crepúsculo de Draktharr",
+        "preco": 2500
+    },
+    "226692": {
+        "nome": "Eclipse",
+        "preco": 2500
+    },
+    "226693": {
+        "nome": "Garra do Espreitador",
+        "preco": 1000
+    },
+    "226694": {
+        "nome": "Rancor de Serylda",
+        "preco": 2500
+    },
+    "226695": {
+        "nome": "Presa da Serpente",
+        "preco": 2500
+    },
+    "226696": {
+        "nome": "Arco do Axioma",
+        "preco": 2500
+    },
+    "226697": {
+        "nome": "Húbris",
+        "preco": 2500
+    },
+    "226698": {
+        "nome": "Hidra Profana",
+        "preco": 2500
+    },
+    "226699": {
+        "nome": "Cicloespada Voltaica",
+        "preco": 2500
+    },
+    "226701": {
+        "nome": "Oportunidade",
+        "preco": 2500
+    },
+    "228001": {
+        "nome": "Correntes de Anathema",
+        "preco": 2500
+    },
+    "228002": {
+        "nome": "Chapéu Mágico de Wooglet",
+        "preco": 6000
+    },
+    "228003": {
+        "nome": "Lâmina Mortal",
+        "preco": 9000
+    },
+    "228004": {
+        "nome": "Elmo Adaptativo",
+        "preco": 6000
+    },
+    "228005": {
+        "nome": "Cutelo Obsidiano",
+        "preco": 3000
+    },
+    "228006": {
+        "nome": "Lâmina Sanguinária",
+        "preco": 3000
+    },
+    "228008": {
+        "nome": "Glaive Rúnica",
+        "preco": 9000
+    },
+    "228009": {
+        "nome": "Multiferramenta",
+        "preco": 2500
+    },
+    "228020": {
+        "nome": "Máscara Abissal",
+        "preco": 2500
+    },
+    "2403": {
+        "nome": "Pulverizador de Tropas",
+        "preco": 0
+    },
+    "2420": {
+        "nome": "Armaguarda da Caçadora",
+        "preco": 1600
+    },
+    "2421": {
+        "nome": "Armaguarda Despedaçada",
+        "preco": 1600
+    },
+    "2422": {
+        "nome": "Botas Levemente Mágicas",
+        "preco": 300
+    },
+    "2501": {
+        "nome": "Armadura Sangrenta do Suserano",
+        "preco": 3300
+    },
+    "2502": {
+        "nome": "Desespero Eterno",
+        "preco": 2800
+    },
+    "2503": {
+        "nome": "Tocha de Chamas Negras",
+        "preco": 2800
+    },
+    "2504": {
+        "nome": "Rookern Lamúrico",
+        "preco": 2900
+    },
+    "2508": {
+        "nome": "Cinzas do Destino",
+        "preco": 900
+    },
+    "2510": {
+        "nome": "Aurora e Crepúsculo",
+        "preco": 3100
+    },
+    "2512": {
+        "nome": "Dardos de Caça-Demônios",
+        "preco": 2650
+    },
+    "2517": {
+        "nome": "Fome Eterna",
+        "preco": 3100
+    },
+    "2520": {
+        "nome": "Quebra-Bastião",
+        "preco": 3200
+    },
+    "2522": {
+        "nome": "Atualizador",
+        "preco": 2800
+    },
+    "2523": {
+        "nome": "Hexótica C44",
+        "preco": 2800
+    },
+    "2524": {
+        "nome": "Bandocanos",
+        "preco": 2300
+    },
+    "2525": {
+        "nome": "Couraça Protoplasmática",
+        "preco": 2500
+    },
+    "2526": {
+        "nome": "Tiara Sussurrante",
+        "preco": 2250
+    },
+    "2530": {
+        "nome": "Diadema de Canções",
+        "preco": 2250
+    },
+    "3001": {
+        "nome": "Proteção Imutável",
+        "preco": 2300
+    },
+    "3002": {
+        "nome": "Desbravador",
+        "preco": 2400
+    },
+    "3003": {
+        "nome": "Cajado do Arcanjo",
+        "preco": 2900
+    },
+    "3004": {
+        "nome": "Manamune",
+        "preco": 2900
+    },
+    "3005": {
+        "nome": "Ghostcrawlers",
+        "preco": 1000
+    },
+    "3006": {
+        "nome": "Grevas do Berserker",
+        "preco": 1100
+    },
+    "3009": {
+        "nome": "Botas da Rapidez",
+        "preco": 1000
+    },
+    "3010": {
+        "nome": "Solas Simbióticas",
+        "preco": 900
+    },
+    "3011": {
+        "nome": "Putrificador Quimtec",
+        "preco": 1900
+    },
+    "3012": {
+        "nome": "Cálice da Bênção",
+        "preco": 900
+    },
+    "3013": {
+        "nome": "Almas Sincronizadas",
+        "preco": 900
+    },
+    "3020": {
+        "nome": "Sapatos do Feiticeiro",
+        "preco": 1100
+    },
+    "3023": {
+        "nome": "Pingente da Vida Abundante",
+        "preco": 1050
+    },
+    "3024": {
+        "nome": "Broquel Glacial",
+        "preco": 900
+    },
+    "3026": {
+        "nome": "Anjo Guardião",
+        "preco": 3200
+    },
+    "3031": {
+        "nome": "Gume do Infinito",
+        "preco": 3500
+    },
+    "3032": {
+        "nome": "Flechatroz de Yun Tal",
+        "preco": 3100
+    },
+    "3033": {
+        "nome": "Lembrete Mortal",
+        "preco": 3000
+    },
+    "3035": {
+        "nome": "Último Sussurro",
+        "preco": 1450
+    },
+    "3036": {
+        "nome": "Lembranças do Lorde Dominik",
+        "preco": 3300
+    },
+    "3039": {
+        "nome": "Acerto de Contas de Atma",
+        "preco": 2900
+    },
+    "3040": {
+        "nome": "Abraço de Seraph",
+        "preco": 2900
+    },
+    "3041": {
+        "nome": "Ladrão de Almas de Mejai",
+        "preco": 1500
+    },
+    "3042": {
+        "nome": "Muramana",
+        "preco": 2900
+    },
+    "3044": {
+        "nome": "Fago",
+        "preco": 1100
+    },
+    "3046": {
+        "nome": "Dançarina Fantasma",
+        "preco": 2650
+    },
+    "3047": {
+        "nome": "Botas Galvanizadas de Aço",
+        "preco": 1200
+    },
+    "3050": {
+        "nome": "Convergência de Zeke",
+        "preco": 2200
+    },
+    "3051": {
+        "nome": "Machado Termestre",
+        "preco": 1200
+    },
+    "3053": {
+        "nome": "Sinal de Sterak",
+        "preco": 3200
+    },
+    "3057": {
+        "nome": "Fulgor",
+        "preco": 900
+    },
+    "3065": {
+        "nome": "Semblante Espiritual",
+        "preco": 2700
+    },
+    "3066": {
+        "nome": "Couraça Lunar Alada",
+        "preco": 800
+    },
+    "3067": {
+        "nome": "Gema Ardente",
+        "preco": 800
+    },
+    "3068": {
+        "nome": "Égide de Fogo Solar",
+        "preco": 2700
+    },
+    "3070": {
+        "nome": "Lágrima da Deusa",
+        "preco": 400
+    },
+    "3071": {
+        "nome": "Cutelo Negro",
+        "preco": 3000
+    },
+    "3072": {
+        "nome": "Sedenta por Sangue",
+        "preco": 3400
+    },
+    "3073": {
+        "nome": "Hexoplaca Experimental",
+        "preco": 3000
+    },
+    "3074": {
+        "nome": "Hidra Raivosa",
+        "preco": 3300
+    },
+    "3075": {
+        "nome": "Armadura de Espinhos",
+        "preco": 2450
+    },
+    "3076": {
+        "nome": "Colete Espinhoso",
+        "preco": 800
+    },
+    "3077": {
+        "nome": "Tiamat",
+        "preco": 1200
+    },
+    "3078": {
+        "nome": "Força da Trindade",
+        "preco": 3333
+    },
+    "3082": {
+        "nome": "Carapaça do Vigia",
+        "preco": 1000
+    },
+    "3083": {
+        "nome": "Armadura de Warmog",
+        "preco": 3100
+    },
+    "3084": {
+        "nome": "Coração de Aço",
+        "preco": 3000
+    },
+    "3085": {
+        "nome": "Furacão de Runaan",
+        "preco": 2650
+    },
+    "3086": {
+        "nome": "Zelo",
+        "preco": 1200
+    },
+    "3087": {
+        "nome": "Faca de Statikk",
+        "preco": 2700
+    },
+    "3089": {
+        "nome": "Capuz da Morte de Rabadon",
+        "preco": 3500
+    },
+    "3091": {
+        "nome": "Limite da Razão",
+        "preco": 2800
+    },
+    "3094": {
+        "nome": "Canhão Fumegante",
+        "preco": 2650
+    },
+    "3095": {
+        "nome": "Item Obsoleto",
+        "preco": 3000
+    },
+    "3097": {
+        "nome": "Chuva de Canivete",
+        "preco": 3200
+    },
+    "3100": {
+        "nome": "Perdição de Lich",
+        "preco": 2900
+    },
+    "3102": {
+        "nome": "Véu da Banshee",
+        "preco": 3000
+    },
+    "3105": {
+        "nome": "Égide da Legião",
+        "preco": 1100
+    },
+    "3107": {
+        "nome": "Redenção",
+        "preco": 2300
+    },
+    "3108": {
+        "nome": "Códex Demoníaco",
+        "preco": 850
+    },
+    "3109": {
+        "nome": "Juramento do Cavaleiro",
+        "preco": 2300
+    },
+    "3110": {
+        "nome": "Coração Congelado",
+        "preco": 2500
+    },
+    "3111": {
+        "nome": "Passos de Mercúrio",
+        "preco": 1250
+    },
+    "3112": {
+        "nome": "Orbe do Guardião",
+        "preco": 950
+    },
+    "3113": {
+        "nome": "Cintilação Etérea",
+        "preco": 900
+    },
+    "3114": {
+        "nome": "Ídolo Proibido",
+        "preco": 600
+    },
+    "3115": {
+        "nome": "Dente de Na'Shor",
+        "preco": 2900
+    },
+    "3116": {
+        "nome": "Cetro de Cristal de Rylai",
+        "preco": 2600
+    },
+    "3117": {
+        "nome": "Botas da Mobilidade",
+        "preco": 1000
+    },
+    "3118": {
+        "nome": "Malevolência",
+        "preco": 2700
+    },
+    "3119": {
+        "nome": "Aproximação Invernal",
+        "preco": 2400
+    },
+    "3121": {
+        "nome": "Fimbulwinter",
+        "preco": 2400
+    },
+    "3123": {
+        "nome": "Chamado do Carrasco",
+        "preco": 800
+    },
+    "3124": {
+        "nome": "Lâmina da Fúria de Guinsoo",
+        "preco": 3000
+    },
+    "3128": {
+        "nome": "Sufocamento Ígneo",
+        "preco": 2900
+    },
+    "3131": {
+        "nome": "Espada do Divino",
+        "preco": 2300
+    },
+    "3133": {
+        "nome": "Martelo de Guerra de Caulfield",
+        "preco": 1050
+    },
+    "3134": {
+        "nome": "Punhal Serrilhado",
+        "preco": 1000
+    },
+    "3135": {
+        "nome": "Cajado do Vazio",
+        "preco": 3000
+    },
+    "3137": {
+        "nome": "Criptoflora",
+        "preco": 3000
+    },
+    "3139": {
+        "nome": "Cimitarra Mercurial",
+        "preco": 3200
+    },
+    "3140": {
+        "nome": "Bandana de Mercúrio",
+        "preco": 1300
+    },
+    "3142": {
+        "nome": "Lâmina Fantasma de Youmuu",
+        "preco": 2800
+    },
+    "3143": {
+        "nome": "Presságio de Randuin",
+        "preco": 2700
+    },
+    "3144": {
+        "nome": "Estilingue do Patrulheiro",
+        "preco": 600
+    },
+    "3145": {
+        "nome": "Alternador Hextec",
+        "preco": 1100
+    },
+    "3146": {
+        "nome": "Pistola Laminar Hextec",
+        "preco": 3000
+    },
+    "3147": {
+        "nome": "Máscara Assustadora",
+        "preco": 1300
+    },
+    "3152": {
+        "nome": "Explocinturão Hextec",
+        "preco": 2650
+    },
+    "3153": {
+        "nome": "Espada do Rei Destruído",
+        "preco": 3200
+    },
+    "3155": {
+        "nome": "Hexdrinker",
+        "preco": 1300
+    },
+    "3156": {
+        "nome": "Mandíbula de Malmortius",
+        "preco": 3100
+    },
+    "3157": {
+        "nome": "Ampulheta de Zhonya",
+        "preco": 3250
+    },
+    "3158": {
+        "nome": "Botas Ionianas da Lucidez",
+        "preco": 900
+    },
+    "3161": {
+        "nome": "Lança de Shojin",
+        "preco": 3100
+    },
+    "3165": {
+        "nome": "Morellonomicon",
+        "preco": 2850
+    },
+    "3170": {
+        "nome": "Marcha Célere",
+        "preco": 1000
+    },
+    "3171": {
+        "nome": "Lucidez Escarlate",
+        "preco": 900
+    },
+    "3172": {
+        "nome": "Grevas Bélicas",
+        "preco": 1100
+    },
+    "3173": {
+        "nome": "Esmagadores Acorrentados",
+        "preco": 1250
+    },
+    "3174": {
+        "nome": "Mobilização Blindada",
+        "preco": 1200
+    },
+    "3175": {
+        "nome": "Sapatos Enfeitiçados",
+        "preco": 1100
+    },
+    "3176": {
+        "nome": "Sempre Avante",
+        "preco": 900
+    },
+    "3177": {
+        "nome": "Lâmina do Guardião",
+        "preco": 950
+    },
+    "3179": {
+        "nome": "Glaive Sombria",
+        "preco": 2800
+    },
+    "3181": {
+        "nome": "Quebracascos",
+        "preco": 3000
+    },
+    "3184": {
+        "nome": "Martelo do Guardião",
+        "preco": 950
+    },
+    "3190": {
+        "nome": "Medalhão dos Solari de Ferro",
+        "preco": 2200
+    },
+    "3193": {
+        "nome": "Placa Gargolítica",
+        "preco": 3150
+    },
+    "3211": {
+        "nome": "Capuz do Espectro",
+        "preco": 1250
+    },
+    "322065": {
+        "nome": "Hino Bélico de Shurelya",
+        "preco": 2600
+    },
+    "3222": {
+        "nome": "Bênção de Mikael",
+        "preco": 2300
+    },
+    "322526": {
+        "nome": "Tiara Sussurrante",
+        "preco": 2250
+    },
+    "322530": {
+        "nome": "Diadema de Canções",
+        "preco": 2250
+    },
+    "323002": {
+        "nome": "Desbravador",
+        "preco": 2600
+    },
+    "323003": {
+        "nome": "Cajado do Arcanjo",
+        "preco": 2900
+    },
+    "323004": {
+        "nome": "Manamune",
+        "preco": 2900
+    },
+    "323040": {
+        "nome": "Abraço de Seraph",
+        "preco": 2900
+    },
+    "323042": {
+        "nome": "Muramana",
+        "preco": 2900
+    },
+    "323050": {
+        "nome": "Convergência de Zeke",
+        "preco": 2300
+    },
+    "323070": {
+        "nome": "Lágrima da Deusa",
+        "preco": 400
+    },
+    "323075": {
+        "nome": "Armadura de Espinhos",
+        "preco": 2650
+    },
+    "323107": {
+        "nome": "Redenção",
+        "preco": 2800
+    },
+    "323109": {
+        "nome": "Juramento do Cavaleiro",
+        "preco": 2900
+    },
+    "323110": {
+        "nome": "Coração Congelado",
+        "preco": 2700
+    },
+    "323119": {
+        "nome": "Aproximação Invernal",
+        "preco": 2400
+    },
+    "323121": {
+        "nome": "Fimbulwinter",
+        "preco": 2400
+    },
+    "323190": {
+        "nome": "Medalhão dos Solari de Ferro",
+        "preco": 2600
+    },
+    "323222": {
+        "nome": "Bênção de Mikael",
+        "preco": 2800
+    },
+    "323504": {
+        "nome": "Turíbulo Ardente",
+        "preco": 2600
+    },
+    "324005": {
+        "nome": "Mandato Imperial",
+        "preco": 2750
+    },
+    "326616": {
+        "nome": "Cajado Aquafluxo",
+        "preco": 2600
+    },
+    "326617": {
+        "nome": "Regenerador de Pedra Lunar",
+        "preco": 2900
+    },
+    "326620": {
+        "nome": "Ecos de Helia",
+        "preco": 2600
+    },
+    "326621": {
+        "nome": "Auronúcleo",
+        "preco": 2900
+    },
+    "326657": {
+        "nome": "Bastão das Eras",
+        "preco": 2600
+    },
+    "328020": {
+        "nome": "Máscara Abissal",
+        "preco": 2850
+    },
+    "3302": {
+        "nome": "Terminus",
+        "preco": 3000
+    },
+    "3330": {
+        "nome": "Efígie do Espantalho",
+        "preco": 0
+    },
+    "3340": {
+        "nome": "Sentinela Invisível",
+        "preco": 0
+    },
+    "3348": {
+        "nome": "Analisador Arcano",
+        "preco": 0
+    },
+    "3349": {
+        "nome": "Singularidade Lucente",
+        "preco": 0
+    },
+    "3363": {
+        "nome": "Alteração Vidente",
+        "preco": 0
+    },
+    "3364": {
+        "nome": "Lente do Oráculo",
+        "preco": 0
+    },
+    "3398": {
+        "nome": "Lembrancinha Pequena",
+        "preco": 0
+    },
+    "3399": {
+        "nome": "Lembrancinha",
+        "preco": 0
+    },
+    "3400": {
+        "nome": "Sua Parte",
+        "preco": 0
+    },
+    "3430": {
+        "nome": "Ritual da Ruína",
+        "preco": 2500
+    },
+    "3504": {
+        "nome": "Turíbulo Ardente",
+        "preco": 2200
+    },
+    "3508": {
+        "nome": "Colhedor de Essência",
+        "preco": 3050
+    },
+    "3513": {
+        "nome": "Olho do Arauto",
+        "preco": 0
+    },
+    "3599": {
+        "nome": "Lança Negra da Kalista",
+        "preco": 0
+    },
+    "3600": {
+        "nome": "Lança Negra da Kalista",
+        "preco": 0
+    },
+    "3742": {
+        "nome": "Couraça do Defunto",
+        "preco": 2900
+    },
+    "3748": {
+        "nome": "Hidra Titânica",
+        "preco": 3300
+    },
+    "3801": {
+        "nome": "Braçadeira Cristalina",
+        "preco": 800
+    },
+    "3802": {
+        "nome": "Capítulo Perdido",
+        "preco": 1200
+    },
+    "3803": {
+        "nome": "Catalisador das Eras",
+        "preco": 1300
+    },
+    "3814": {
+        "nome": "Limiar da Noite",
+        "preco": 3000
+    },
+    "3850": {
+        "nome": "Gume do Ladrão Arcano",
+        "preco": 400
+    },
+    "3851": {
+        "nome": "Presas Gélidas",
+        "preco": 400
+    },
+    "3853": {
+        "nome": "Estilhaço de Gelo Verdadeiro",
+        "preco": 400
+    },
+    "3854": {
+        "nome": "Guarda-ombros de Aço",
+        "preco": 400
+    },
+    "3855": {
+        "nome": "Espaldeiras de Aço Rúnico",
+        "preco": 400
+    },
+    "3857": {
+        "nome": "Ombreiras de Pedralva",
+        "preco": 400
+    },
+    "3858": {
+        "nome": "Escudo Relicário",
+        "preco": 400
+    },
+    "3859": {
+        "nome": "Broquel de Targon",
+        "preco": 400
+    },
+    "3860": {
+        "nome": "Bastião da Montanha",
+        "preco": 400
+    },
+    "3862": {
+        "nome": "Foice Espectral",
+        "preco": 400
+    },
+    "3863": {
+        "nome": "Tormento Crescente",
+        "preco": 400
+    },
+    "3864": {
+        "nome": "Foice da Névoa Negra",
+        "preco": 400
+    },
+    "3865": {
+        "nome": "Atlas Mundial",
+        "preco": 400
+    },
+    "3866": {
+        "nome": "Bússola Rúnica",
+        "preco": 400
+    },
+    "3867": {
+        "nome": "Dádiva dos Mundos",
+        "preco": 400
+    },
+    "3869": {
+        "nome": "Oposição Celestial",
+        "preco": 400
+    },
+    "3870": {
+        "nome": "Criassonhos",
+        "preco": 400
+    },
+    "3871": {
+        "nome": "Invadomínio de Zaz'Zak",
+        "preco": 400
+    },
+    "3876": {
+        "nome": "Trenó do Solstício",
+        "preco": 400
+    },
+    "3877": {
+        "nome": "Canção de Sangue",
+        "preco": 400
+    },
+    "3901": {
+        "nome": "<rarityLegendary>Disparar à Vontade</rarityLegendary><br><subtitleLeft><silver>500 Serpentes de Prata</silver></subtitleLeft>",
+        "preco": 0
+    },
+    "3902": {
+        "nome": "<rarityLegendary>Filha da Morte</rarityLegendary><br><subtitleLeft><silver>500 Serpentes de Prata</silver></subtitleLeft>",
+        "preco": 0
+    },
+    "3903": {
+        "nome": "<rarityLegendary>Levantar o Moral</rarityLegendary><br><subtitleLeft><silver>500 Serpentes de Prata</silver></subtitleLeft>",
+        "preco": 0
+    },
+    "3916": {
+        "nome": "Orbe do Oblívio",
+        "preco": 800
+    },
+    "4003": {
+        "nome": "Salva-Vidas",
+        "preco": 1600
+    },
+    "4004": {
+        "nome": "Alfanje Espectral",
+        "preco": 2800
+    },
+    "4005": {
+        "nome": "Mandato Imperial",
+        "preco": 2250
+    },
+    "4010": {
+        "nome": "Maldição Sanguessuga",
+        "preco": 2500
+    },
+    "4011": {
+        "nome": "Espada da Alvorada Florescente",
+        "preco": 2500
+    },
+    "4012": {
+        "nome": "Devorador de Pecados",
+        "preco": 3000
+    },
+    "4013": {
+        "nome": "Corrente Eletrizante",
+        "preco": 3000
+    },
+    "4014": {
+        "nome": "Malho Congelado",
+        "preco": 3000
+    },
+    "4015": {
+        "nome": "Perplexidade",
+        "preco": 2500
+    },
+    "4016": {
+        "nome": "Promessa Silenciosa",
+        "preco": 2500
+    },
+    "4017": {
+        "nome": "Machadinha Infernal",
+        "preco": 2500
+    },
+    "4401": {
+        "nome": "Força da Natureza",
+        "preco": 2800
+    },
+    "4402": {
+        "nome": "Medalhão Enervante",
+        "preco": 2950
+    },
+    "4403": {
+        "nome": "A Espátula Dourada",
+        "preco": 7187
+    },
+    "443054": {
+        "nome": "Garras de Aço Sombrio",
+        "preco": 1000
+    },
+    "443055": {
+        "nome": "Fulminação",
+        "preco": 1000
+    },
+    "443056": {
+        "nome": "Coroa do Rei Demoníaco",
+        "preco": 1000
+    },
+    "443058": {
+        "nome": "Escudo de Rocha Fundida",
+        "preco": 1000
+    },
+    "443059": {
+        "nome": "Manto da Noite Estrelada",
+        "preco": 1000
+    },
+    "443060": {
+        "nome": "Espada do Divino",
+        "preco": 1000
+    },
+    "443061": {
+        "nome": "Força da Entropia",
+        "preco": 1000
+    },
+    "443062": {
+        "nome": "Presente Sanguinário",
+        "preco": 1000
+    },
+    "443063": {
+        "nome": "Milagre de Eleisa",
+        "preco": 1000
+    },
+    "443064": {
+        "nome": "Talismã da Ascensão",
+        "preco": 1000
+    },
+    "443069": {
+        "nome": "Debilitador",
+        "preco": 1000
+    },
+    "443079": {
+        "nome": "Quimiotanque Turbo",
+        "preco": 1000
+    },
+    "443080": {
+        "nome": "Máscara Gêmea",
+        "preco": 1000
+    },
+    "443081": {
+        "nome": "Companheiro Hexraio",
+        "preco": 1000
+    },
+    "443083": {
+        "nome": "Armadura de Warmog",
+        "preco": 1000
+    },
+    "443090": {
+        "nome": "Colheita do Ceifador",
+        "preco": 1000
+    },
+    "443193": {
+        "nome": "Placa Gargolítica",
+        "preco": 1000
+    },
+    "444636": {
+        "nome": "Colhedor Noturno",
+        "preco": 1000
+    },
+    "444637": {
+        "nome": "Abraço Demoníaco",
+        "preco": 1000
+    },
+    "444644": {
+        "nome": "Coroa da Rainha Despedaçada",
+        "preco": 1000
+    },
+    "446632": {
+        "nome": "Ruptor Divino",
+        "preco": 1000
+    },
+    "446656": {
+        "nome": "Glacieterno",
+        "preco": 1000
+    },
+    "446667": {
+        "nome": "Virtude Radiante",
+        "preco": 1000
+    },
+    "446671": {
+        "nome": "Força do Vendaval",
+        "preco": 1000
+    },
+    "446691": {
+        "nome": "Crepúsculo de Draktharr",
+        "preco": 1000
+    },
+    "446693": {
+        "nome": "Garra do Espreitador",
+        "preco": 1000
+    },
+    "447100": {
+        "nome": "Espada da Miragem",
+        "preco": 1000
+    },
+    "447101": {
+        "nome": "Lâmina do Apostador",
+        "preco": 1000
+    },
+    "447102": {
+        "nome": "Fenda Dimensional",
+        "preco": 1000
+    },
+    "447103": {
+        "nome": "Elmo do Hemomante",
+        "preco": 1000
+    },
+    "447104": {
+        "nome": "Medalhão Enervante",
+        "preco": 1000
+    },
+    "447105": {
+        "nome": "Promessa Empírea",
+        "preco": 1000
+    },
+    "447106": {
+        "nome": "Coração Dracônico",
+        "preco": 1000
+    },
+    "447107": {
+        "nome": "Decapitador",
+        "preco": 1000
+    },
+    "447108": {
+        "nome": "Criarrunas",
+        "preco": 1000
+    },
+    "447109": {
+        "nome": "Crueldade",
+        "preco": 1000
+    },
+    "447110": {
+        "nome": "Lâmina Enfeitiçada Moonflair",
+        "preco": 1000
+    },
+    "447111": {
+        "nome": "Armadura Sangrenta do Suserano",
+        "preco": 2500
+    },
+    "447112": {
+        "nome": "Comecarne",
+        "preco": 1000
+    },
+    "447113": {
+        "nome": "Orbe de Detonação",
+        "preco": 1000
+    },
+    "447114": {
+        "nome": "Reverberação",
+        "preco": 1000
+    },
+    "447115": {
+        "nome": "Regicídio",
+        "preco": 1000
+    },
+    "447116": {
+        "nome": "Jitte Kinkou",
+        "preco": 1000
+    },
+    "447118": {
+        "nome": "Capa do Piromante",
+        "preco": 1000
+    },
+    "447119": {
+        "nome": "Bastão Eletrizante",
+        "preco": 1000
+    },
+    "447120": {
+        "nome": "Lança de Diamante",
+        "preco": 1000
+    },
+    "447121": {
+        "nome": "Limite do Crepúsculo",
+        "preco": 1000
+    },
+    "447122": {
+        "nome": "Manopla do Buraco Negro",
+        "preco": 1000
+    },
+    "447123": {
+        "nome": "Titereiro",
+        "preco": 1000
+    },
+    "4628": {
+        "nome": "Foco do Horizonte",
+        "preco": 2700
+    },
+    "4629": {
+        "nome": "Ímpeto Cósmico",
+        "preco": 3000
+    },
+    "4630": {
+        "nome": "Joia da Ruína",
+        "preco": 1100
+    },
+    "4632": {
+        "nome": "Barreira Verdejante",
+        "preco": 1600
+    },
+    "4633": {
+        "nome": "Criafendas",
+        "preco": 3100
+    },
+    "4635": {
+        "nome": "Olhar Sanguessuga",
+        "preco": 1265
+    },
+    "4636": {
+        "nome": "Colhedor Noturno",
+        "preco": 2765
+    },
+    "4637": {
+        "nome": "Abraço Demoníaco",
+        "preco": 3000
+    },
+    "4638": {
+        "nome": "Pedra-vigia Observadora",
+        "preco": 1100
+    },
+    "4641": {
+        "nome": "Pedra-vigia Inspiradora",
+        "preco": 350
+    },
+    "4642": {
+        "nome": "Espelho de Bandópolis",
+        "preco": 900
+    },
+    "4643": {
+        "nome": "Pedra-vigia Vigilante",
+        "preco": 2300
+    },
+    "4644": {
+        "nome": "Coroa da Rainha Despedaçada",
+        "preco": 2865
+    },
+    "4645": {
+        "nome": "Chama Sombria",
+        "preco": 3200
+    },
+    "4646": {
+        "nome": "Ápice da Tempestade",
+        "preco": 2800
+    },
+    "6029": {
+        "nome": "Chicote Ferrifarpo",
+        "preco": 1100
+    },
+    "6032": {
+        "nome": "Atributo adicional",
+        "preco": 750
+    },
+    "6035": {
+        "nome": "Alvorada de Pratânia",
+        "preco": 3000
+    },
+    "6333": {
+        "nome": "Dança da Morte",
+        "preco": 3300
+    },
+    "6609": {
+        "nome": "Serrespada Quimiopunk",
+        "preco": 3000
+    },
+    "6610": {
+        "nome": "Céu Dividido",
+        "preco": 3100
+    },
+    "6616": {
+        "nome": "Cajado Aquafluxo",
+        "preco": 2250
+    },
+    "6617": {
+        "nome": "Regenerador de Pedra Lunar",
+        "preco": 2200
+    },
+    "6620": {
+        "nome": "Ecos de Helia",
+        "preco": 2200
+    },
+    "6621": {
+        "nome": "Auronúcleo",
+        "preco": 2500
+    },
+    "6630": {
+        "nome": "Hemodrenário",
+        "preco": 3200
+    },
+    "663039": {
+        "nome": "Acerto de Contas de Atma",
+        "preco": 2500
+    },
+    "663056": {
+        "nome": "Coroa do Rei Demoníaco",
+        "preco": 2500
+    },
+    "663058": {
+        "nome": "Escudo de Rocha Fundida",
+        "preco": 2500
+    },
+    "663059": {
+        "nome": "Manto da Noite Estrelada",
+        "preco": 2500
+    },
+    "663060": {
+        "nome": "Espada do Divino",
+        "preco": 2500
+    },
+    "663064": {
+        "nome": "Talismã da Ascensão de Veigar",
+        "preco": 900
+    },
+    "6631": {
+        "nome": "Quebrapassos",
+        "preco": 3300
+    },
+    "663146": {
+        "nome": "Pistola Laminar Hextec",
+        "preco": 2500
+    },
+    "663172": {
+        "nome": "Zéfiro",
+        "preco": 2500
+    },
+    "663193": {
+        "nome": "Placa Gargolítica",
+        "preco": 2500
+    },
+    "6632": {
+        "nome": "Ruptor Divino",
+        "preco": 3450
+    },
+    "664011": {
+        "nome": "Espada da Alvorada Florescente",
+        "preco": 2500
+    },
+    "664403": {
+        "nome": "Espátula Dourada",
+        "preco": 2500
+    },
+    "664644": {
+        "nome": "Coroa da Rainha Despedaçada",
+        "preco": 2500
+    },
+    "6653": {
+        "nome": "Tormento de Liandry",
+        "preco": 3000
+    },
+    "6655": {
+        "nome": "Eco de Luden",
+        "preco": 2750
+    },
+    "6656": {
+        "nome": "Glacieterno",
+        "preco": 2865
+    },
+    "6657": {
+        "nome": "Bastão das Eras",
+        "preco": 2600
+    },
+    "6660": {
+        "nome": "Brasa de Bami",
+        "preco": 900
+    },
+    "6662": {
+        "nome": "Manopla dos Glacinatas",
+        "preco": 2900
+    },
+    "6664": {
+        "nome": "Resplendor Vazio",
+        "preco": 2800
+    },
+    "6665": {
+        "nome": "Jak'Sho, o Inconstante",
+        "preco": 3200
+    },
+    "6667": {
+        "nome": "Virtude Radiante",
+        "preco": 2600
+    },
+    "6670": {
+        "nome": "Aljava Vespertina",
+        "preco": 1300
+    },
+    "6671": {
+        "nome": "Força do Vendaval",
+        "preco": 3500
+    },
+    "667101": {
+        "nome": "Lâmina do Apostador",
+        "preco": 2500
+    },
+    "667109": {
+        "nome": "Crueldade",
+        "preco": 2500
+    },
+    "667112": {
+        "nome": "Comecarne",
+        "preco": 2500
+    },
+    "6672": {
+        "nome": "Mata-Cráquens",
+        "preco": 3000
+    },
+    "6673": {
+        "nome": "Arco-escudo Imortal",
+        "preco": 3000
+    },
+    "6675": {
+        "nome": "Adaga Oscilante Navori",
+        "preco": 2650
+    },
+    "6676": {
+        "nome": "A Coletora",
+        "preco": 3000
+    },
+    "667666": {
+        "nome": "A Coletora",
+        "preco": 3000
+    },
+    "6677": {
+        "nome": "Faca da Fúria",
+        "preco": 1100
+    },
+    "6690": {
+        "nome": "Retriz",
+        "preco": 775
+    },
+    "6691": {
+        "nome": "Crepúsculo de Draktharr",
+        "preco": 2950
+    },
+    "6692": {
+        "nome": "Eclipse",
+        "preco": 2900
+    },
+    "6693": {
+        "nome": "Garra do Espreitador",
+        "preco": 2850
+    },
+    "6694": {
+        "nome": "Rancor de Serylda",
+        "preco": 3000
+    },
+    "6695": {
+        "nome": "Presa da Serpente",
+        "preco": 2500
+    },
+    "6696": {
+        "nome": "Arco do Axioma",
+        "preco": 2750
+    },
+    "6697": {
+        "nome": "Húbris",
+        "preco": 2800
+    },
+    "6698": {
+        "nome": "Hidra Profana",
+        "preco": 2850
+    },
+    "6699": {
+        "nome": "Cicloespada Voltaica",
+        "preco": 3000
+    },
+    "6700": {
+        "nome": "Escudo dos Rakkor",
+        "preco": 2675
+    },
+    "6701": {
+        "nome": "Oportunidade",
+        "preco": 2700
+    },
+    "6702": {
+        "nome": "Abrindo Caminho",
+        "preco": 0
+    },
+    "7050": {
+        "nome": "Gangplank Placeholder",
+        "preco": 0
+    },
+    "8001": {
+        "nome": "Correntes de Anátema",
+        "preco": 2500
+    },
+    "8010": {
+        "nome": "Maldição Sanguinária",
+        "preco": 2900
+    },
+    "8020": {
+        "nome": "Máscara Abissal",
+        "preco": 2650
+    },
+    "9168": {
+        "nome": "Espaço de arma trancado",
+        "preco": 0
+    },
+    "9171": {
+        "nome": "Retalhadores Ciclônicos",
+        "preco": 0
+    },
+    "9172": {
+        "nome": "YuumiBot",
+        "preco": 0
+    },
+    "9173": {
+        "nome": "Campo Radiante",
+        "preco": 0
+    },
+    "9174": {
+        "nome": "Espada de Statikk",
+        "preco": 0
+    },
+    "9175": {
+        "nome": "Lamento da Leoa",
+        "preco": 0
+    },
+    "9176": {
+        "nome": "Metralhadora Leporina",
+        "preco": 0
+    },
+    "9177": {
+        "nome": "Arco Calcinante",
+        "preco": 0
+    },
+    "9178": {
+        "nome": "A Aniquiladora",
+        "preco": 0
+    },
+    "9179": {
+        "nome": "Besta da Coelha de Batalha",
+        "preco": 0
+    },
+    "9180": {
+        "nome": "Lança-UwU",
+        "preco": 0
+    },
+    "9181": {
+        "nome": "Luva-vórtice",
+        "preco": 0
+    },
+    "9183": {
+        "nome": "Laminarangue",
+        "preco": 0
+    },
+    "9184": {
+        "nome": "Megaexplosão Coelhal",
+        "preco": 0
+    },
+    "9185": {
+        "nome": "Mina Antitubarão",
+        "preco": 0
+    },
+    "9187": {
+        "nome": "T.I.B.B.E.R.S",
+        "preco": 0
+    },
+    "9188": {
+        "nome": "Animinas",
+        "preco": 0
+    },
+    "9189": {
+        "nome": "Trânsito da Cidade Final",
+        "preco": 0
+    },
+    "9190": {
+        "nome": "Lâminas-morcego Ecoantes",
+        "preco": 0
+    },
+    "9192": {
+        "nome": "Envenenador Patinha",
+        "preco": 0
+    },
+    "9193": {
+        "nome": "Armadura Crioexplosiva",
+        "preco": 0
+    },
+    "9271": {
+        "nome": "Ciclone Incessante",
+        "preco": 0
+    },
+    "9272": {
+        "nome": "YuumiBot_Final_FINAL",
+        "preco": 0
+    },
+    "9273": {
+        "nome": "Abraço Explosivo",
+        "preco": 0
+    },
+    "9274": {
+        "nome": "Entalhador Elétrico de Prumbis",
+        "preco": 0
+    },
+    "9275": {
+        "nome": "Luz Envolvente",
+        "preco": 0
+    },
+    "9276": {
+        "nome": "Artilharia Felpuda",
+        "preco": 0
+    },
+    "9277": {
+        "nome": "Incendisparo Evoluído",
+        "preco": 0
+    },
+    "9278": {
+        "nome": "Animapocalipse",
+        "preco": 0
+    },
+    "9279": {
+        "nome": "Balista da Coelha Prime",
+        "preco": 0
+    },
+    "9280": {
+        "nome": "Lança-OwO",
+        "preco": 0
+    },
+    "9281": {
+        "nome": "Manopla da Tempestade",
+        "preco": 0
+    },
+    "9283": {
+        "nome": "Quadrarangue",
+        "preco": 0
+    },
+    "9284": {
+        "nome": "Carga Célere Coelhal",
+        "preco": 0
+    },
+    "9285": {
+        "nome": "Esmagador Eterno",
+        "preco": 0
+    },
+    "9287": {
+        "nome": "T.I.B.B.E.R.S (Edição G.R.A.N.D.Ã.O.)",
+        "preco": 0
+    },
+    "9288": {
+        "nome": "Trinamite da Jinx",
+        "preco": 0
+    },
+    "9289": {
+        "nome": "Expresso Limitado da Cidade Final",
+        "preco": 0
+    },
+    "9290": {
+        "nome": "Lâminas Cromáticas da Vayne",
+        "preco": 0
+    },
+    "9292": {
+        "nome": "Quimiodistribuidor Pata de Urso",
+        "preco": 0
+    },
+    "9293": {
+        "nome": "Congelamento Profundo",
+        "preco": 0
+    },
+    "9300": {
+        "nome": "Miau Miau",
+        "preco": 0
+    },
+    "9301": {
+        "nome": "Escudada",
+        "preco": 0
+    },
+    "9302": {
+        "nome": "Onda Sonora",
+        "preco": 0
+    },
+    "9303": {
+        "nome": "Golpe de Berlinda",
+        "preco": 0
+    },
+    "9304": {
+        "nome": "Tempestade de Aço",
+        "preco": 0
+    },
+    "9305": {
+        "nome": "Golpe de Tentáculo",
+        "preco": 0
+    },
+    "9306": {
+        "nome": "Adaga Alada",
+        "preco": 0
+    },
+    "9307": {
+        "nome": "Feitiço-guia",
+        "preco": 0
+    },
+    "9308": {
+        "nome": "Pula-pula",
+        "preco": 0
+    },
+    "9400": {
+        "nome": "Barragem da Felina de Batalha",
+        "preco": 0
+    },
+    "9401": {
+        "nome": "Luz do Leão",
+        "preco": 0
+    },
+    "9402": {
+        "nome": "Eco Anima",
+        "preco": 0
+    },
+    "9403": {
+        "nome": "Corte Selvagem",
+        "preco": 0
+    },
+    "9404": {
+        "nome": "Tempestades Errantes",
+        "preco": 0
+    },
+    "9405": {
+        "nome": "Esmagamento da Ursa",
+        "preco": 0
+    },
+    "9406": {
+        "nome": "Ricochete dos Amantes",
+        "preco": 0
+    },
+    "9407": {
+        "nome": "Feitiço Pula-pula",
+        "preco": 0
+    },
+    "9408": {
+        "nome": "Destruição Cenourística",
+        "preco": 0
+    },
+    "994403": {
+        "nome": "Espátula Dourada",
+        "preco": 2500
+    }
+}

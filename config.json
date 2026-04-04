@@ -1,0 +1,27 @@
+{
+    "api_key": "",
+    "preco_core": 2000,
+    "min_jogos_analista": 8,
+    "min_jogos_comp": 3,
+    "min_jogos_core": 2,
+    "min_jogos_late": 2,
+    "min_aparicoes_meta": 15,
+    "ban_ids": [
+        1001,
+        2003,
+        2010,
+        2052,
+        2055,
+        2138,
+        2139,
+        2140,
+        2403,
+        3340,
+        3363,
+        3364,
+        222052
+    ],
+    "modo_mayhem": 900,
+    "region_americas": "americas",
+    "region_br": "br1"
+}

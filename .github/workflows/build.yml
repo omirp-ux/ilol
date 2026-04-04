@@ -1,0 +1,70 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:       # permite rodar manualmente pelo site do GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+
+      # 1. Baixa o código do repositório
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instala Python 3.11
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3. Dependências do sistema necessárias para o Buildozer
+      - name: Instalar dependências do sistema
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk \
+            python3-pip autoconf libtool pkg-config \
+            zlib1g-dev libncurses5-dev libncursesw5-dev \
+            cmake libffi-dev libssl-dev
+
+      # 4. Instala o Buildozer e o Cython
+      - name: Instalar Buildozer
+        run: |
+          pip install --upgrade buildozer cython
+
+      # 5. Cache do Android SDK/NDK e das dependências do Buildozer
+      #    (evita baixar ~2 GB a cada build)
+      - name: Cache Buildozer
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            ~/.gradle
+          key: buildozer-${{ hashFiles('buildozer.spec') }}
+          restore-keys: buildozer-
+
+      # 6. Compila o APK em modo debug
+      - name: Build APK
+        run: |
+          buildozer -v android debug 2>&1 | tee build.log
+
+      # 7. Disponibiliza o APK para download
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: iLoL-APK
+          path: bin/*.apk
+          retention-days: 30
+
+      # 8. Em caso de falha, disponibiliza o log completo
+      - name: Upload log em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          retention-days: 7
