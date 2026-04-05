@@ -14,10 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Python 3.10 — mais compatível com pyjnius/Kivy no Android
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Instalar dependências do sistema
         run: |
@@ -28,9 +29,10 @@ jobs:
             zlib1g-dev libncurses5-dev libncursesw5-dev \
             cmake libffi-dev libssl-dev
 
+      # Cython 0.29.x — Cython 3.x quebra o pyjnius
       - name: Instalar Buildozer
         run: |
-          pip install --upgrade buildozer cython
+          pip install --upgrade "cython==0.29.36" buildozer
 
       - name: Cache Buildozer
         uses: actions/cache@v4

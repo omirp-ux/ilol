@@ -13,7 +13,7 @@ version         = 1.0
 entrypoint = centro.py
 
 requirements =
-    python3,
+    python3==3.10,
     kivy==2.3.0,
     kivymd==1.2.0,
     requests,
@@ -35,7 +35,6 @@ android.permissions =
 android.api     = 33
 android.minapi  = 26
 android.ndk     = 25b
-android.sdk     = 33
 
 android.archs = arm64-v8a, armeabi-v7a
 
