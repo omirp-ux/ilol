@@ -5,19 +5,35 @@ import os
 def get_pasta() -> str:
     """
     Retorna o diretório de dados do iLoL.
-
-    - Android: /sdcard/Android/data/com.ilol.app/files/
-      Acessível sem root via gerenciador de arquivos, cabo USB, etc.
-    - PC: pasta do próprio script (comportamento original, sem mudança).
+    - Android: solicita permissão em runtime e usa /sdcard/Android/data/com.ilol.ilol/files/
+    - PC: pasta do próprio script (comportamento original).
     """
     try:
         from android.storage import primary_external_storage_path  # type: ignore
+        from android.permissions import request_permissions, Permission, check_permission  # type: ignore
+
+        # Solicita permissões de armazenamento em runtime
+        request_permissions([
+            Permission.READ_EXTERNAL_STORAGE,
+            Permission.WRITE_EXTERNAL_STORAGE,
+        ])
+
         base  = primary_external_storage_path()
-        pasta = os.path.join(base, "Android", "data", "com.ilol.app", "files")
-        os.makedirs(pasta, exist_ok=True)
-        return pasta
+        pasta = os.path.join(base, "Android", "data", "com.ilol.ilol", "files")
+
+        # Tenta criar a pasta — se ainda negar, usa fallback interno
+        try:
+            os.makedirs(pasta, exist_ok=True)
+            return pasta
+        except PermissionError:
+            # Fallback: armazenamento interno do app (sempre acessível)
+            from kivy.app import App  # type: ignore
+            internal = App.get_running_app().user_data_dir
+            os.makedirs(internal, exist_ok=True)
+            return internal
+
     except ImportError:
-        # Não é Android — retorna o diretório do script (comportamento original)
+        # Não é Android — retorna diretório do script (PC)
         return os.path.dirname(os.path.abspath(__file__))
 
 
@@ -43,7 +59,6 @@ PADRAO = {
 
 # ─── Funções públicas ─────────────────────────────────────────────────────────
 def carregar() -> dict:
-    """Lê config.json, preenchendo chaves faltantes com os valores padrão."""
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, encoding="utf-8") as f:
             cfg = json.load(f)
@@ -57,7 +72,6 @@ def carregar() -> dict:
 
 
 def salvar(cfg: dict) -> None:
-    """Persiste o dicionário de configuração em config.json."""
-    os.makedirs(PASTA, exist_ok=True)          # garante que a pasta existe
+    os.makedirs(PASTA, exist_ok=True)
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         json.dump(cfg, f, indent=4, ensure_ascii=False)

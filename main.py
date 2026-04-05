@@ -1,6 +1,6 @@
 """
 Ponto de entrada do iLoL para Android.
-Captura qualquer erro de importacao/execucao e salva em crash.log.
+Solicita permissões ANTES de qualquer import que acesse o disco.
 """
 import sys
 import os
@@ -11,26 +11,17 @@ def salvar_crash(exc_text):
     candidates = [
         "/sdcard/ilol_crash.log",
         "/sdcard/Android/ilol_crash.log",
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), "crash.log"),
     ]
     for path in candidates:
         try:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(exc_text)
-            return path
+            return
         except Exception:
             continue
-    return None
 
 
-try:
-    from centro import ILoLApp
-    ILoLApp().run()
-
-except Exception:
-    erro = traceback.format_exc()
-    salvar_crash(erro)
-
+def mostrar_erro(erro):
     try:
         from kivy.app import App
         from kivy.uix.scrollview import ScrollView
@@ -56,3 +47,24 @@ except Exception:
         CrashApp().run()
     except Exception:
         pass
+
+
+try:
+    # Solicita permissões de armazenamento ANTES de qualquer import
+    # que tente acessar o disco (config.py, etc.)
+    try:
+        from android.permissions import request_permissions, Permission  # type: ignore
+        request_permissions([
+            Permission.READ_EXTERNAL_STORAGE,
+            Permission.WRITE_EXTERNAL_STORAGE,
+        ])
+    except ImportError:
+        pass  # não é Android
+
+    from centro import ILoLApp
+    ILoLApp().run()
+
+except Exception:
+    erro = traceback.format_exc()
+    salvar_crash(erro)
+    mostrar_erro(erro)
