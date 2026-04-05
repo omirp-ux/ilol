@@ -1,24 +1,14 @@
-"""
-Ponto de entrada do iLoL para Android.
-Solicita permissões ANTES de qualquer import que acesse o disco.
-"""
-import sys
-import os
 import traceback
 
 
 def salvar_crash(exc_text):
-    candidates = [
-        "/sdcard/ilol_crash.log",
-        "/sdcard/Android/ilol_crash.log",
-    ]
-    for path in candidates:
+    for path in ["/sdcard/ilol_crash.log"]:
         try:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(exc_text)
             return
         except Exception:
-            continue
+            pass
 
 
 def mostrar_erro(erro):
@@ -31,7 +21,7 @@ def mostrar_erro(erro):
             def build(self):
                 sv = ScrollView()
                 lbl = Label(
-                    text="ERRO AO INICIAR:\n\n" + erro,
+                    text="ERRO:\n\n" + erro,
                     size_hint_y=None,
                     font_size="11sp",
                     halign="left",
@@ -50,20 +40,8 @@ def mostrar_erro(erro):
 
 
 try:
-    # Solicita permissões de armazenamento ANTES de qualquer import
-    # que tente acessar o disco (config.py, etc.)
-    try:
-        from android.permissions import request_permissions, Permission  # type: ignore
-        request_permissions([
-            Permission.READ_EXTERNAL_STORAGE,
-            Permission.WRITE_EXTERNAL_STORAGE,
-        ])
-    except ImportError:
-        pass  # não é Android
-
     from centro import ILoLApp
     ILoLApp().run()
-
 except Exception:
     erro = traceback.format_exc()
     salvar_crash(erro)

@@ -1,45 +1,50 @@
 import json
 import os
 
+_pasta_cache = None
+
 
 def get_pasta() -> str:
     """
     Retorna o diretório de dados do iLoL.
-    - Android: solicita permissão em runtime e usa /sdcard/Android/data/com.ilol.ilol/files/
-    - PC: pasta do próprio script (comportamento original).
+
+    - Android: usa context.getExternalFilesDir(None) via jnius.
+      Isso retorna /storage/emulated/0/Android/data/com.ilol.ilol/files/
+      e cria o diretório automaticamente, sem precisar de permissão
+      explícita (o Android protege pelo package name, não por permission).
+      jnius está disponível desde o início da Activity, antes do App Kivy.
+
+    - PC: pasta do próprio script (comportamento original, sem mudança).
     """
+    global _pasta_cache
+    if _pasta_cache is not None:
+        return _pasta_cache
+
     try:
-        from android.storage import primary_external_storage_path  # type: ignore
-        from android.permissions import request_permissions, Permission, check_permission  # type: ignore
+        from jnius import autoclass  # type: ignore
 
-        # Solicita permissões de armazenamento em runtime
-        request_permissions([
-            Permission.READ_EXTERNAL_STORAGE,
-            Permission.WRITE_EXTERNAL_STORAGE,
-        ])
+        PythonActivity = autoclass('org.kivy.android.PythonActivity')
+        context = PythonActivity.mActivity
 
-        base  = primary_external_storage_path()
-        pasta = os.path.join(base, "Android", "data", "com.ilol.ilol", "files")
+        # getExternalFilesDir(null) → Android/data/<package>/files/
+        # O Android cria esse diretório automaticamente e garante acesso
+        # ao próprio app sem nenhuma permissão de storage.
+        external = context.getExternalFilesDir(None)
+        if external is not None:
+            path = external.getAbsolutePath()
+        else:
+            # Fallback: armazenamento interno do app (não visível no gerenciador)
+            path = context.getFilesDir().getAbsolutePath()
 
-        # Tenta criar a pasta — se ainda negar, usa fallback interno
-        try:
-            os.makedirs(pasta, exist_ok=True)
-            return pasta
-        except PermissionError:
-            # Fallback: armazenamento interno do app (sempre acessível)
-            from kivy.app import App  # type: ignore
-            internal = App.get_running_app().user_data_dir
-            os.makedirs(internal, exist_ok=True)
-            return internal
+        os.makedirs(path, exist_ok=True)
+        _pasta_cache = path
 
     except ImportError:
-        # Não é Android — retorna diretório do script (PC)
-        return os.path.dirname(os.path.abspath(__file__))
+        # Não é Android — usa diretório do script (PC)
+        _pasta_cache = os.path.dirname(os.path.abspath(__file__))
 
+    return _pasta_cache
 
-# ─── Caminhos derivados ───────────────────────────────────────────────────────
-PASTA       = get_pasta()
-CONFIG_PATH = os.path.join(PASTA, "config.json")
 
 # ─── Valores padrão ───────────────────────────────────────────────────────────
 PADRAO = {
@@ -57,10 +62,12 @@ PADRAO = {
     "region_br":          "br1",
 }
 
+
 # ─── Funções públicas ─────────────────────────────────────────────────────────
 def carregar() -> dict:
-    if os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, encoding="utf-8") as f:
+    config_path = os.path.join(get_pasta(), "config.json")
+    if os.path.exists(config_path):
+        with open(config_path, encoding="utf-8") as f:
             cfg = json.load(f)
         for k, v in PADRAO.items():
             if k not in cfg:
@@ -72,6 +79,7 @@ def carregar() -> dict:
 
 
 def salvar(cfg: dict) -> None:
-    os.makedirs(PASTA, exist_ok=True)
-    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+    pasta = get_pasta()
+    os.makedirs(pasta, exist_ok=True)
+    with open(os.path.join(pasta, "config.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f, indent=4, ensure_ascii=False)
