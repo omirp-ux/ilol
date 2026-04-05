@@ -10,7 +10,6 @@ source.include_patterns = campeoes.json,itens.json
 version         = 1.0
 
 # Ponto de entrada
-entrypoint = centro.py
 
 requirements =
     python3,
