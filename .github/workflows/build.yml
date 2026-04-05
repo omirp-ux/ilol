@@ -14,7 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Python 3.10 — mais compatível com pyjnius/Kivy no Android
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -29,7 +28,13 @@ jobs:
             zlib1g-dev libncurses5-dev libncursesw5-dev \
             cmake libffi-dev libssl-dev
 
-      # Cython 0.29.x — Cython 3.x quebra o pyjnius
+      # Garante que o Java 17 recém instalado é o padrão do sistema
+      - name: Configurar Java 17
+        run: |
+          sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> $GITHUB_ENV
+          java -version
+
       - name: Instalar Buildozer
         run: |
           pip install --upgrade "cython==0.29.36" buildozer

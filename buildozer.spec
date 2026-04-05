@@ -9,8 +9,6 @@ source.include_patterns = campeoes.json,itens.json
 
 version         = 1.0
 
-# Ponto de entrada
-
 requirements =
     python3,
     kivy==2.3.0,
@@ -36,10 +34,6 @@ android.minapi  = 26
 android.ndk     = 25b
 
 android.archs = arm64-v8a, armeabi-v7a
-
-# Ícone e splash (opcional — coloque icon.png e presplash.png na raiz se quiser)
-# icon.filename     = %(source.dir)s/icon.png
-# presplash.filename = %(source.dir)s/presplash.png
 
 [buildozer]
 log_level = 2
