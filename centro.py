@@ -15,7 +15,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.metrics import dp, sp
 
 from kivymd.app import MDApp
@@ -30,7 +29,7 @@ from kivymd.uix.tab import MDTabs, MDTabsBase
 from config import get_pasta
 import config as cfg_mod
 
-PASTA  = get_pasta()
+PASTA   = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
 
@@ -39,8 +38,6 @@ CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 # ─────────────────────────────────────────────────────────────────────────────
 
 class LogOutput(ScrollView):
-    """Área de texto rolável para logs e resultados de análise."""
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._label = Label(
@@ -63,26 +60,25 @@ class LogOutput(ScrollView):
         self.add_widget(self._label)
 
     def append(self, text: str):
-        """Adiciona texto ao final e rola para baixo."""
         def _do(dt):
             self._label.text += text
             self.scroll_y = 0
         Clock.schedule_once(_do, 0)
 
     def set_text(self, text: str):
-        """Substitui todo o conteúdo e rola para o topo."""
         def _do(dt):
             self._label.text = text.strip() or "(sem resultado)"
             self.scroll_y = 1
         Clock.schedule_once(_do, 0)
 
     def clear(self, *a):
-        Clock.schedule_once(lambda dt: self._label.setter("text")(self._label, ""), 0)
+        Clock.schedule_once(
+            lambda dt: self._label.setter("text")(self._label, ""), 0
+        )
 
 
 class IntField(BoxLayout):
-    """Campo numérico com botões − e + (substitui ttk.Spinbox)."""
-
+    """Campo numerico com botoes - e +."""
     def __init__(self, min_val=0, max_val=9999, value=0, **kwargs):
         super().__init__(
             orientation="horizontal",
@@ -139,7 +135,6 @@ class IntField(BoxLayout):
 
 
 class Tab(FloatLayout, MDTabsBase):
-    """Aba base para MDTabs."""
     pass
 
 
@@ -151,34 +146,29 @@ class ILoLApp(MDApp):
 
     def build(self):
         self.title = "ARAM Analyst"
-        self.theme_cls.theme_style    = "Dark"
+        self.theme_cls.theme_style     = "Dark"
         self.theme_cls.primary_palette = "Blue"
 
         self.cfg = cfg_mod.carregar()
 
-        # Estado do minerador
         self.miner_stop   = threading.Event()
         self.miner_pause  = threading.Event()
         self.miner_log_q  = queue.Queue()
         self.miner_thread = None
 
-        # ── Root ──────────────────────────────────────────────────────────────
         root = MDBoxLayout(orientation="vertical")
-
-        # Toolbar
         root.add_widget(MDTopAppBar(title="ARAM Analyst", elevation=4))
 
-        # MDTabs com as 9 abas
         tabs = MDTabs(allow_stretch=True, anim_duration=0.15)
         tab_defs = [
             ("Config",      self._build_tab_config),
             ("Minerador",   self._build_tab_miner),
             ("Meta",        self._build_tab_meta),
             ("Analista",    self._build_tab_analista),
-            ("Composição",  self._build_tab_comp),
+            ("Composicao",  self._build_tab_comp),
             ("Core Build",  self._build_tab_core),
             ("Late Game",   self._build_tab_late),
-            ("Power Spike", self._build_tab_spike),
+            ("Pw. Spike",   self._build_tab_spike),
             ("Reparar",     self._build_tab_repair),
         ]
         for name, builder in tab_defs:
@@ -188,7 +178,7 @@ class ILoLApp(MDApp):
         root.add_widget(tabs)
 
         # Status bar
-        status_row = BoxLayout(size_hint_y=None, height=dp(26))
+        status_row = BoxLayout(size_hint_y=None, height=dp(28))
         self.status_lbl = MDLabel(
             text="Pronto.",
             font_style="Caption",
@@ -199,26 +189,23 @@ class ILoLApp(MDApp):
             font_style="Caption",
             halign="right",
             padding=(dp(8), 0),
-            size_hint_x=0.45,
+            size_hint_x=0.5,
         )
         status_row.add_widget(self.status_lbl)
         status_row.add_widget(self.banco_lbl)
         root.add_widget(status_row)
 
-        # Tarefas periódicas
         Clock.schedule_interval(self._poll_miner_log, 0.15)
         Clock.schedule_interval(lambda dt: self._atualizar_banco(), 5)
         Clock.schedule_once(lambda dt: self._atualizar_banco(), 0.5)
 
         return root
 
-    # ── Banco ─────────────────────────────────────────────────────────────────
-
     def _atualizar_banco(self, *a):
         from utils import contar_partidas
         n = contar_partidas(PASTA)
         if n == -1:
-            self.banco_lbl.text = "Banco: CORROMPIDO ⚠"
+            self.banco_lbl.text = "Banco: CORROMPIDO"
         elif n == 0:
             self.banco_lbl.text = "Banco: vazio"
         else:
@@ -239,7 +226,7 @@ class ILoLApp(MDApp):
         lay.bind(minimum_height=lay.setter("height"))
 
         lay.add_widget(MDLabel(
-            text="Configurações do Sistema",
+            text="Configuracoes do Sistema",
             font_style="H6",
             size_hint_y=None,
             height=dp(36),
@@ -252,6 +239,9 @@ class ILoLApp(MDApp):
             size_hint_y=None,
             height=dp(28),
         ))
+
+        # Campo + botao olho na mesma linha
+        api_row = BoxLayout(size_hint_y=None, height=dp(48), spacing=dp(8))
         self.api_field = MDTextField(
             text=self.cfg.get("api_key", ""),
             hint_text="RGAPI-xxxxxxxx-...",
@@ -259,32 +249,32 @@ class ILoLApp(MDApp):
             size_hint_y=None,
             height=dp(48),
         )
-        lay.add_widget(self.api_field)
-
         self._api_visible = False
-        self.btn_eye = MDRaisedButton(
-            text="👁  Mostrar Key",
-            size_hint_y=None,
-            height=dp(40),
+        self.btn_eye = MDIconButton(
+            icon="eye",
             on_release=self._toggle_api_vis,
+            size_hint=(None, 1),
+            width=dp(48),
         )
-        lay.add_widget(self.btn_eye)
+        api_row.add_widget(self.api_field)
+        api_row.add_widget(self.btn_eye)
+        lay.add_widget(api_row)
 
-        # Parâmetros numéricos
+        # Parametros numericos
         lay.add_widget(MDLabel(
-            text="Parâmetros de Análise",
+            text="Parametros de Analise",
             font_style="Subtitle1",
             size_hint_y=None,
             height=dp(32),
         ))
 
         params = [
-            ("Preço mín. item finalizado (todos os módulos)", "preco_core",        2000),
-            ("Mínimo de jogos — Analista vs Classe",          "min_jogos_analista", 8),
-            ("Mínimo de jogos — Analista de Composição",      "min_jogos_comp",     3),
-            ("Mínimo de jogos — Core Build",                  "min_jogos_core",     2),
-            ("Mínimo de jogos — Late Game",                   "min_jogos_late",     2),
-            ("Mínimo de aparições — Tier List (Meta)",        "min_aparicoes_meta", 15),
+            ("Preco minimo de item finalizado", "preco_core",        2000),
+            ("Min. jogos — Analista vs Classe", "min_jogos_analista", 8),
+            ("Min. jogos — Composicao",         "min_jogos_comp",     3),
+            ("Min. jogos — Core Build",         "min_jogos_core",     2),
+            ("Min. jogos — Late Game",          "min_jogos_late",     2),
+            ("Min. aparicoes — Tier List",      "min_aparicoes_meta", 15),
         ]
         self.param_fields = {}
         for label, key, default in params:
@@ -296,7 +286,7 @@ class ILoLApp(MDApp):
             lay.add_widget(row)
 
         lay.add_widget(MDRaisedButton(
-            text="💾  Salvar Configurações",
+            text="Salvar Configuracoes",
             size_hint_y=None,
             height=dp(48),
             on_release=self._salvar_config,
@@ -308,15 +298,15 @@ class ILoLApp(MDApp):
     def _toggle_api_vis(self, *a):
         self._api_visible = not self._api_visible
         self.api_field.password = not self._api_visible
-        self.btn_eye.text = "🔒  Ocultar Key" if self._api_visible else "👁  Mostrar Key"
+        self.btn_eye.icon = "eye-off" if self._api_visible else "eye"
 
     def _salvar_config(self, *a):
         self.cfg["api_key"] = self.api_field.text.strip()
         for key, field in self.param_fields.items():
             self.cfg[key] = field.get()
         cfg_mod.salvar(self.cfg)
-        self.status_lbl.text = "✅  Configurações salvas!"
-        Snackbar(text="Configurações salvas com sucesso!").open()
+        self.status_lbl.text = "Configuracoes salvas!"
+        Snackbar(text="Configuracoes salvas com sucesso!").open()
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ABA: Minerador
@@ -325,19 +315,18 @@ class ILoLApp(MDApp):
     def _build_tab_miner(self):
         lay = MDBoxLayout(orientation="vertical", padding=dp(12), spacing=dp(8))
 
-        # Botões de controle
         ctrl = BoxLayout(size_hint_y=None, height=dp(52), spacing=dp(8))
         self.btn_start = MDRaisedButton(
-            text="▶ Iniciar",
+            text="Iniciar",
             on_release=self._miner_start,
         )
         self.btn_pause = MDRaisedButton(
-            text="⏸ Pausar",
+            text="Pausar",
             on_release=self._miner_toggle_pause,
             disabled=True,
         )
         self.btn_stop = MDRaisedButton(
-            text="⏹ Parar",
+            text="Parar",
             on_release=self._miner_stop,
             disabled=True,
         )
@@ -355,7 +344,7 @@ class ILoLApp(MDApp):
         lay.add_widget(self.miner_status_lbl)
 
         lay.add_widget(MDLabel(
-            text="ℹ  Ao pausar, reparar_dados roda automaticamente.",
+            text="Ao pausar, reparar_dados roda automaticamente.",
             size_hint_y=None,
             height=dp(20),
             font_style="Caption",
@@ -363,7 +352,7 @@ class ILoLApp(MDApp):
         ))
 
         lay.add_widget(MDLabel(
-            text="Log de Mineração",
+            text="Log de Mineracao",
             font_style="Subtitle2",
             size_hint_y=None,
             height=dp(24),
@@ -373,7 +362,7 @@ class ILoLApp(MDApp):
         lay.add_widget(self.miner_log)
 
         lay.add_widget(MDFlatButton(
-            text="🧹  Limpar Log",
+            text="Limpar Log",
             size_hint_y=None,
             height=dp(40),
             on_release=self.miner_log.clear,
@@ -394,20 +383,18 @@ class ILoLApp(MDApp):
         self.btn_start.disabled = True
         self.btn_pause.disabled = False
         self.btn_stop.disabled  = False
-        self.miner_status_lbl.text = "🟢  Minerando..."
+        self.miner_status_lbl.text = "[Minerando]"
 
     def _miner_toggle_pause(self, *a):
         if self.miner_pause.is_set():
             self.miner_pause.clear()
-            self.btn_pause.text = "⏸ Pausar"
-            self.miner_status_lbl.text = "🟢  Minerando..."
+            self.btn_pause.text = "Pausar"
+            self.miner_status_lbl.text = "[Minerando]"
         else:
             self.miner_pause.set()
-            self.btn_pause.text = "▶ Retomar"
-            self.miner_status_lbl.text = "⏸  Pausado — Reparando dados..."
-            threading.Thread(
-                target=self._reparar_apos_pausa, daemon=True
-            ).start()
+            self.btn_pause.text = "Retomar"
+            self.miner_status_lbl.text = "[Pausado] Reparando dados..."
+            threading.Thread(target=self._reparar_apos_pausa, daemon=True).start()
 
     def _reparar_apos_pausa(self):
         self._log_miner("\n[Sistema] Pausa acionada — reparo preventivo iniciado...\n")
@@ -417,7 +404,7 @@ class ILoLApp(MDApp):
         except Exception as e:
             self._log_miner(f"[Sistema] Erro no reparo: {e}\n")
         Clock.schedule_once(
-            lambda dt: setattr(self.miner_status_lbl, "text", "⏸  Pausado"), 0
+            lambda dt: setattr(self.miner_status_lbl, "text", "[Pausado]"), 0
         )
         Clock.schedule_once(lambda dt: self._atualizar_banco(), 0)
 
@@ -425,13 +412,13 @@ class ILoLApp(MDApp):
         self.miner_stop.set()
         self.miner_pause.clear()
         self._reset_miner_btns()
-        self.miner_status_lbl.text = "⏹  Minerador parado."
+        self.miner_status_lbl.text = "Minerador parado."
 
     def _reset_miner_btns(self, *a):
         def _do(dt):
             self.btn_start.disabled = False
             self.btn_pause.disabled = True
-            self.btn_pause.text     = "⏸ Pausar"
+            self.btn_pause.text     = "Pausar"
             self.btn_stop.disabled  = True
         Clock.schedule_once(_do, 0)
 
@@ -447,7 +434,7 @@ class ILoLApp(MDApp):
             self._log_miner(f"[Erro fatal] {e}\n")
         self._reset_miner_btns()
         Clock.schedule_once(
-            lambda dt: setattr(self.miner_status_lbl, "text", "⏹  Minerador encerrado."), 0
+            lambda dt: setattr(self.miner_status_lbl, "text", "Minerador encerrado."), 0
         )
         Clock.schedule_once(lambda dt: self._atualizar_banco(), 0)
 
@@ -475,7 +462,7 @@ class ILoLApp(MDApp):
         lay.add_widget(row)
 
         lay.add_widget(MDRaisedButton(
-            text="🚀  Gerar Tier List",
+            text="Gerar Tier List",
             size_hint_y=None,
             height=dp(48),
             on_release=self._run_meta,
@@ -501,7 +488,7 @@ class ILoLApp(MDApp):
         lay = MDBoxLayout(orientation="vertical", padding=dp(12), spacing=dp(8))
 
         self.ana_champ = MDTextField(
-            hint_text="Campeão",
+            hint_text="Campeao",
             size_hint_y=None,
             height=dp(48),
         )
@@ -514,7 +501,7 @@ class ILoLApp(MDApp):
             height=dp(26),
         ))
 
-        # Seletor de classe — botões de toggle
+        # Grid 3 colunas — nomes de classe sao curtos, cabe bem
         self._ana_class = "Tank"
         self._ana_btns  = {}
         grid = GridLayout(cols=3, size_hint_y=None, height=dp(108), spacing=dp(6))
@@ -529,7 +516,7 @@ class ILoLApp(MDApp):
         self._sel_ana("Tank")
 
         lay.add_widget(MDRaisedButton(
-            text="🚀  Analisar",
+            text="Analisar",
             size_hint_y=None,
             height=dp(48),
             on_release=self._run_analista,
@@ -557,12 +544,12 @@ class ILoLApp(MDApp):
         self._run_thread(worker, "Analisando...")
 
     # ─────────────────────────────────────────────────────────────────────────
-    #  ABA: Composição
+    #  ABA: Composicao
     # ─────────────────────────────────────────────────────────────────────────
 
     def _build_tab_comp(self):
         lay, champ, fields, out = self._multi_classe_layout(
-            btn_label="🚀  Analisar Composição",
+            btn_label="Analisar Composicao",
             btn_callback=self._run_comp,
         )
         self.comp_champ  = champ
@@ -580,7 +567,7 @@ class ILoLApp(MDApp):
                 self._capture(ana.analisar_comp, self.comp_champ.text, comp)
             )
             self._done()
-        self._run_thread(worker, "Analisando composição...")
+        self._run_thread(worker, "Analisando composicao...")
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ABA: Core Build
@@ -588,7 +575,7 @@ class ILoLApp(MDApp):
 
     def _build_tab_core(self):
         lay, champ, fields, out = self._multi_classe_layout(
-            btn_label="🚀  Buscar Core Build",
+            btn_label="Buscar Core Build",
             btn_callback=self._run_core,
         )
         self.core_champ  = champ
@@ -614,7 +601,7 @@ class ILoLApp(MDApp):
 
     def _build_tab_late(self):
         lay, champ, fields, out = self._multi_classe_layout(
-            btn_label="🚀  Analisar Late Game",
+            btn_label="Analisar Late Game",
             btn_callback=self._run_late,
         )
         self.late_champ  = champ
@@ -642,13 +629,13 @@ class ILoLApp(MDApp):
         lay = MDBoxLayout(orientation="vertical", padding=dp(12), spacing=dp(8))
 
         self.spike_champ = MDTextField(
-            hint_text="Campeão",
+            hint_text="Campeao",
             size_hint_y=None,
             height=dp(48),
         )
         lay.add_widget(self.spike_champ)
         lay.add_widget(MDRaisedButton(
-            text="🚀  Analisar Power Spike",
+            text="Analisar Power Spike",
             size_hint_y=None,
             height=dp(48),
             on_release=self._run_spike,
@@ -676,10 +663,10 @@ class ILoLApp(MDApp):
 
         info = (
             "Verifica e repara o historico_partidas.json caso tenha sido\n"
-            "interrompido no meio de uma mineração.\n\n"
-            "✅  Arquivo corrompido é substituído automaticamente.\n"
-            "📦  Backup criado como historico_partidas.bak.\n"
-            "⏸   Ao pausar o Minerador, esta função roda automaticamente."
+            "interrompido no meio de uma mineracao.\n\n"
+            "- Arquivo corrompido e substituido automaticamente.\n"
+            "- Backup criado como historico_partidas.bak.\n"
+            "- Ao pausar o Minerador, esta funcao roda automaticamente."
         )
         lay.add_widget(MDLabel(
             text=info,
@@ -690,11 +677,11 @@ class ILoLApp(MDApp):
 
         row = BoxLayout(size_hint_y=None, height=dp(48), spacing=dp(8))
         row.add_widget(MDRaisedButton(
-            text="🔧  Reparar Agora",
+            text="Reparar Agora",
             on_release=self._run_repair,
         ))
         row.add_widget(MDFlatButton(
-            text="🧹  Limpar Log",
+            text="Limpar Log",
             on_release=lambda *a: self.repair_out.clear(),
         ))
         lay.add_widget(row)
@@ -722,9 +709,8 @@ class ILoLApp(MDApp):
 
     def _multi_classe_layout(self, btn_label: str, btn_callback):
         """
-        Layout padrão das abas Composição / Core Build / Late Game:
-        campo campeão + IntFields por classe + botão + LogOutput.
-        Retorna (layout, champ_field, class_fields_dict, log_output).
+        Layout para Composicao / Core Build / Late Game.
+        Classes em lista vertical — uma por linha, sem corte de texto.
         """
         sv = ScrollView()
         lay = MDBoxLayout(
@@ -736,36 +722,39 @@ class ILoLApp(MDApp):
         lay.bind(minimum_height=lay.setter("height"))
 
         champ = MDTextField(
-            hint_text="Campeão",
+            hint_text="Campeao",
             size_hint_y=None,
             height=dp(48),
         )
         lay.add_widget(champ)
 
         lay.add_widget(MDLabel(
-            text="Mínimo de cada classe na composição inimiga:",
+            text="Minimo de cada classe na composicao inimiga:",
             font_style="Caption",
             size_hint_y=None,
             height=dp(22),
         ))
 
         fields = {}
-        grid = GridLayout(
-            cols=2,
-            size_hint_y=None,
-            spacing=(dp(8), dp(4)),
-        )
-        grid.bind(minimum_height=grid.setter("height"))
-
         for cl in CLASSES:
-            row = BoxLayout(size_hint_y=None, height=dp(48), spacing=dp(6))
-            row.add_widget(MDLabel(text=f"{cl}:", size_hint_x=0.38))
-            f = IntField(min_val=0, max_val=5, value=0)
+            # Cada classe ocupa uma linha inteira — sem corte
+            row = BoxLayout(
+                orientation="horizontal",
+                size_hint_y=None,
+                height=dp(52),
+                spacing=dp(8),
+            )
+            lbl = MDLabel(
+                text=f"{cl}:",
+                size_hint_x=0.45,
+                halign="left",
+                valign="middle",
+            )
+            f = IntField(min_val=0, max_val=5, value=0, size_hint_x=0.55)
             fields[cl] = f
+            row.add_widget(lbl)
             row.add_widget(f)
-            grid.add_widget(row)
-
-        lay.add_widget(grid)
+            lay.add_widget(row)
 
         lay.add_widget(MDRaisedButton(
             text=btn_label,
@@ -774,14 +763,13 @@ class ILoLApp(MDApp):
             on_release=btn_callback,
         ))
 
-        out = LogOutput(size_hint_y=None, height=dp(360))
+        out = LogOutput(size_hint_y=None, height=dp(340))
         lay.add_widget(out)
 
         sv.add_widget(lay)
         return sv, champ, fields, out
 
     def _capture(self, func, *args, **kwargs) -> str:
-        """Executa func redirecionando stdout para string e retorna o resultado."""
         old = sys.stdout
         buf = io.StringIO()
         sys.stdout = buf
@@ -794,12 +782,12 @@ class ILoLApp(MDApp):
             sys.stdout = old
 
     def _run_thread(self, worker, status_msg: str):
-        self.status_lbl.text = f"⏳  {status_msg}"
+        self.status_lbl.text = f"Aguarde: {status_msg}"
         threading.Thread(target=worker, daemon=True).start()
 
     def _done(self):
         Clock.schedule_once(
-            lambda dt: setattr(self.status_lbl, "text", "✅  Concluído."), 0
+            lambda dt: setattr(self.status_lbl, "text", "Concluido."), 0
         )
 
     @staticmethod
