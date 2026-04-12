@@ -5,10 +5,13 @@ Execute com: python main.py
 import sys
 import io
 import os
+import json
 import threading
 import queue
+from collections import Counter
 
 from kivy.clock import Clock
+from kivy.core.text import LabelBase
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -31,12 +34,23 @@ import config as cfg_mod
 PASTA   = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
+# Registra fonte monoespaçada — usada nos resultados de análise.
+# O arquivo RobotoMono-Regular.ttf deve estar na raiz do projeto.
+_FONT_DIR  = os.path.dirname(os.path.abspath(__file__))
+_MONO_PATH = os.path.join(_FONT_DIR, "RobotoMono-Regular.ttf")
+if os.path.exists(_MONO_PATH):
+    LabelBase.register(name="RobotoMono", fn_regular=_MONO_PATH)
+    _MONO_FONT = "RobotoMono"
+else:
+    _MONO_FONT = "Roboto"   # fallback sem erro
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Widgets auxiliares
 # ─────────────────────────────────────────────────────────────────────────────
 
 class LogOutput(ScrollView):
+    """Area de saida de texto com fonte monoespaçada."""
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._label = Label(
@@ -45,6 +59,7 @@ class LogOutput(ScrollView):
             halign="left",
             valign="top",
             font_size=sp(11),
+            font_name=_MONO_FONT,
             padding=(dp(8), dp(8)),
             color=(0.88, 0.88, 0.88, 1),
         )
@@ -156,6 +171,7 @@ class ILoLApp(MDApp):
         tabs = MDTabs(allow_stretch=True, anim_duration=0.15)
         tab_defs = [
             ("Config",      self._build_tab_config),
+            ("Banco",       self._build_tab_banco),
             ("Meta",        self._build_tab_meta),
             ("Analista",    self._build_tab_analista),
             ("Composicao",  self._build_tab_comp),
@@ -224,7 +240,6 @@ class ILoLApp(MDApp):
             height=dp(36),
         ))
 
-        # API Key
         lay.add_widget(MDLabel(
             text="Riot API Key",
             font_style="Subtitle1",
@@ -251,7 +266,6 @@ class ILoLApp(MDApp):
         api_row.add_widget(self.btn_eye)
         lay.add_widget(api_row)
 
-        # Parametros numericos
         lay.add_widget(MDLabel(
             text="Parametros de Analise",
             font_style="Subtitle1",
@@ -298,6 +312,97 @@ class ILoLApp(MDApp):
         cfg_mod.salvar(self.cfg)
         self.status_lbl.text = "Configuracoes salvas!"
         Snackbar(text="Configuracoes salvas com sucesso!").open()
+
+    # ─────────────────────────────────────────────────────────────────────────
+    #  ABA: Banco — status por campeão
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def _build_tab_banco(self):
+        lay = MDBoxLayout(orientation="vertical", padding=dp(12), spacing=dp(8))
+
+        ctrl = BoxLayout(size_hint_y=None, height=dp(52), spacing=dp(8))
+        ctrl.add_widget(MDLabel(
+            text="Min. registros:",
+            size_hint_x=0.45,
+            halign="left",
+            valign="middle",
+        ))
+        self.banco_min = IntField(min_val=1, max_val=9999, value=1, size_hint_x=0.30)
+        ctrl.add_widget(self.banco_min)
+        ctrl.add_widget(MDRaisedButton(
+            text="Atualizar",
+            size_hint_x=0.25,
+            on_release=self._run_banco,
+        ))
+        lay.add_widget(ctrl)
+
+        self.banco_status_out = LogOutput()
+        lay.add_widget(self.banco_status_out)
+        return lay
+
+    def _run_banco(self, *a):
+        min_registros = self.banco_min.get()
+
+        def worker():
+            path = os.path.join(PASTA, "historico_partidas.json")
+            if not os.path.exists(path):
+                self.banco_status_out.set_text(
+                    "historico_partidas.json nao encontrado.\n"
+                    "Copie o arquivo do PC via USB."
+                )
+                self._done()
+                return
+
+            try:
+                with open(path, encoding="utf-8") as f:
+                    partidas = json.load(f)
+            except Exception as e:
+                self.banco_status_out.set_text(f"Erro ao ler o banco:\n{e}")
+                self._done()
+                return
+
+            from utils import normalizar_champ, carregar_display_names
+            display_names = carregar_display_names(PASTA)
+
+            contagem = Counter()
+            for p in partidas:
+                if not isinstance(p, dict):
+                    continue
+                champ = p.get("meu_campeao", "")
+                if champ:
+                    norm    = normalizar_champ(champ)
+                    display = display_names.get(norm, champ)
+                    contagem[display] += 1
+
+            total_registros = sum(contagem.values())
+            total_champs    = len(contagem)
+
+            linhas = [
+                f"Total de registros : {total_registros:>9,}",
+                f"Campeoes distintos : {total_champs:>9,}",
+                f"Filtro minimo      : {min_registros:>9,}",
+                "=" * 35,
+                f"{'CAMPEAO':<22} {'REG':>6}  {'%':>5}",
+                "-" * 35,
+            ]
+
+            filtrados = [
+                (nome, cnt)
+                for nome, cnt in contagem.most_common()
+                if cnt >= min_registros
+            ]
+
+            if not filtrados:
+                linhas.append("(nenhum campeao acima do filtro)")
+            else:
+                for nome, cnt in filtrados:
+                    pct = cnt / total_registros * 100
+                    linhas.append(f"{nome:<22} {cnt:>6,}  {pct:>4.1f}%")
+
+            self.banco_status_out.set_text("\n".join(linhas))
+            self._done()
+
+        self._run_thread(worker, "Lendo banco de dados...")
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ABA: Meta

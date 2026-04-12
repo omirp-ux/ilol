@@ -4,8 +4,8 @@ package.name    = ilol
 package.domain  = com.ilol
 
 source.dir      = .
-source.include_exts = py,json
-source.include_patterns = campeoes.json,itens.json
+source.include_exts = py,json,ttf
+source.include_patterns = campeoes.json,itens.json,RobotoMono-Regular.ttf
 
 version         = 1.0
 
