@@ -34,15 +34,9 @@ import config as cfg_mod
 PASTA   = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
-# Registra fonte monoespaçada — usada nos resultados de análise.
-# O arquivo RobotoMono-Regular.ttf deve estar na raiz do projeto.
-_FONT_DIR  = os.path.dirname(os.path.abspath(__file__))
-_MONO_PATH = os.path.join(_FONT_DIR, "RobotoMono-Regular.ttf")
-if os.path.exists(_MONO_PATH):
-    LabelBase.register(name="RobotoMono", fn_regular=_MONO_PATH)
-    _MONO_FONT = "RobotoMono"
-else:
-    _MONO_FONT = "Roboto"   # fallback sem erro
+# Fonte monoespaçada — será registrada dentro de build(), após o Kivy inicializar.
+# Aqui só guardamos o nome que será usado nos widgets.
+_MONO_FONT = "RobotoMono"   # atualizado para "Roboto" se o TTF não carregar
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -165,6 +159,10 @@ class ILoLApp(MDApp):
 
         self.cfg = cfg_mod.carregar()
 
+        # Registra a fonte monoespaçada aqui, após o Kivy estar inicializado.
+        # O try/except garante fallback silencioso caso o TTF não carregue.
+        self._registrar_fonte()
+
         root = MDBoxLayout(orientation="vertical")
         root.add_widget(MDTopAppBar(title="ARAM Analyst", elevation=4))
 
@@ -208,6 +206,23 @@ class ILoLApp(MDApp):
         Clock.schedule_once(lambda dt: self._atualizar_banco(), 0.5)
 
         return root
+
+    def _registrar_fonte(self):
+        """
+        Registra RobotoMono depois que o Kivy já inicializou o sistema gráfico.
+        Se falhar por qualquer motivo, cai silenciosamente para Roboto.
+        """
+        global _MONO_FONT
+        font_dir  = os.path.dirname(os.path.abspath(__file__))
+        font_path = os.path.join(font_dir, "RobotoMono-Regular.ttf")
+        if os.path.exists(font_path):
+            try:
+                LabelBase.register(name="RobotoMono", fn_regular=font_path)
+                _MONO_FONT = "RobotoMono"
+            except Exception:
+                _MONO_FONT = "Roboto"
+        else:
+            _MONO_FONT = "Roboto"
 
     def _atualizar_banco(self, *a):
         from utils import contar_partidas
