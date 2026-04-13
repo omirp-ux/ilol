@@ -56,17 +56,27 @@ jobs:
           printf '\n33b6937684c63422b741b521fea99ca3bdc49e93\n' \
             > ~/.buildozer/android/platform/android-sdk/licenses/android-googletv-license
 
-      # Substitui o debug.keystore pelo nosso keystore persistente.
-      # Builds debug sempre usam ~/.android/debug.keystore —
-      # ao trocar esse arquivo pela nossa chave fixa, todo APK gerado
-      # terá a mesma assinatura e o Android aceitará como atualização.
+      # Valida e instala o keystore persistente.
+      # Se KEYSTORE_B64 não estiver configurado nos secrets, o build FALHA aqui
+      # com mensagem clara em vez de gerar um APK com chave aleatória
+      # (que causaria conflito de assinatura na próxima instalação).
       - name: Instalar keystore persistente
         run: |
+          if [ -z "${{ secrets.KEYSTORE_B64 }}" ]; then
+            echo "::error::KEYSTORE_B64 nao esta configurado nos secrets do repositorio."
+            echo "Acesse Settings -> Secrets -> Actions e adicione o secret KEYSTORE_B64."
+            echo "Para gerar o keystore pela primeira vez, rode o workflow 'Gerar Keystore'."
+            exit 1
+          fi
           mkdir -p ~/.android
           echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > ~/.android/debug.keystore
+          TAMANHO=$(wc -c < ~/.android/debug.keystore)
+          echo "Keystore instalado com sucesso ($TAMANHO bytes)."
+          if [ "$TAMANHO" -lt 100 ]; then
+            echo "::error::Keystore parece invalido (muito pequeno). Verifique o secret KEYSTORE_B64."
+            exit 1
+          fi
 
-      # O version code sobe a cada build usando o número do run do GitHub.
-      # O Android exige que atualizações tenham version code maior que o instalado.
       - name: Atualizar version code
         run: |
           grep -q "^android.numeric_version" buildozer.spec \

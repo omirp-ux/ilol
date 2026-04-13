@@ -14,7 +14,6 @@ from kivy.clock import Clock
 from kivy.core.text import LabelBase
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 from kivy.metrics import dp, sp
@@ -22,10 +21,10 @@ from kivy.metrics import dp, sp
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDIconButton
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDTopAppBar
-from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.tab import MDTabs, MDTabsBase
 
 from config import get_pasta
@@ -35,8 +34,8 @@ PASTA   = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
 # Fonte monoespaçada — será registrada dentro de build(), após o Kivy inicializar.
-# Aqui só guardamos o nome que será usado nos widgets.
-_MONO_FONT = "RobotoMono"   # atualizado para "Roboto" se o TTF não carregar
+# Aqui só declaramos o nome; o valor real é atualizado por _registrar_fonte().
+_MONO_FONT = "RobotoMono"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -44,7 +43,7 @@ _MONO_FONT = "RobotoMono"   # atualizado para "Roboto" se o TTF não carregar
 # ─────────────────────────────────────────────────────────────────────────────
 
 class LogOutput(ScrollView):
-    """Area de saida de texto com fonte monoespaçada."""
+    """Area de saida com fonte monoespaçada para manter colunas alinhadas."""
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._label = Label(
@@ -142,7 +141,11 @@ class IntField(BoxLayout):
         self._field.text = str(value)
 
 
-class Tab(FloatLayout, MDTabsBase):
+# CORREÇÃO: MDFloatLayout (KivyMD) em vez de FloatLayout (Kivy puro).
+# FloatLayout não consome corretamente o kwarg "title" na cadeia de herança
+# cooperativa com MDTabsBase, fazendo sobrar kwargs que chegam a
+# object.__init__() → TypeError ao rolar/trocar abas com 9+ tabs.
+class Tab(MDFloatLayout, MDTabsBase):
     pass
 
 
@@ -159,8 +162,8 @@ class ILoLApp(MDApp):
 
         self.cfg = cfg_mod.carregar()
 
-        # Registra a fonte monoespaçada aqui, após o Kivy estar inicializado.
-        # O try/except garante fallback silencioso caso o TTF não carregue.
+        # Registra a fonte APÓS o Kivy estar completamente inicializado.
+        # Se falhar por qualquer razão, cai silenciosamente para "Roboto".
         self._registrar_fonte()
 
         root = MDBoxLayout(orientation="vertical")
@@ -209,8 +212,8 @@ class ILoLApp(MDApp):
 
     def _registrar_fonte(self):
         """
-        Registra RobotoMono depois que o Kivy já inicializou o sistema gráfico.
-        Se falhar por qualquer motivo, cai silenciosamente para Roboto.
+        Registra RobotoMono após o Kivy inicializar o sistema gráfico/SDL2.
+        Se o arquivo não existir ou o carregamento falhar, usa Roboto como fallback.
         """
         global _MONO_FONT
         font_dir  = os.path.dirname(os.path.abspath(__file__))
@@ -325,8 +328,9 @@ class ILoLApp(MDApp):
         for key, field in self.param_fields.items():
             self.cfg[key] = field.get()
         cfg_mod.salvar(self.cfg)
+        # Snackbar removido — API incompatível com KivyMD 1.2.0.
+        # O status_lbl já fornece o feedback necessário.
         self.status_lbl.text = "Configuracoes salvas!"
-        Snackbar(text="Configuracoes salvas com sucesso!").open()
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ABA: Banco — status por campeão
