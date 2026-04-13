@@ -14,6 +14,7 @@ from kivy.clock import Clock
 from kivy.core.text import LabelBase
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 from kivy.metrics import dp, sp
@@ -21,10 +22,10 @@ from kivy.metrics import dp, sp
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton, MDFlatButton, MDIconButton
-from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
 from kivymd.uix.toolbar import MDTopAppBar
+from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.tab import MDTabs, MDTabsBase
 
 from config import get_pasta
@@ -33,8 +34,8 @@ import config as cfg_mod
 PASTA   = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
-# Fonte monoespaçada — será registrada dentro de build(), após o Kivy inicializar.
-# Aqui só declaramos o nome; o valor real é atualizado por _registrar_fonte().
+# Nome da fonte monoespaçada. Registrada em build() após o Kivy inicializar.
+# Se o registro falhar, _registrar_fonte() atualiza para "Roboto" como fallback.
 _MONO_FONT = "RobotoMono"
 
 
@@ -43,7 +44,6 @@ _MONO_FONT = "RobotoMono"
 # ─────────────────────────────────────────────────────────────────────────────
 
 class LogOutput(ScrollView):
-    """Area de saida com fonte monoespaçada para manter colunas alinhadas."""
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._label = Label(
@@ -141,11 +141,7 @@ class IntField(BoxLayout):
         self._field.text = str(value)
 
 
-# CORREÇÃO: MDFloatLayout (KivyMD) em vez de FloatLayout (Kivy puro).
-# FloatLayout não consome corretamente o kwarg "title" na cadeia de herança
-# cooperativa com MDTabsBase, fazendo sobrar kwargs que chegam a
-# object.__init__() → TypeError ao rolar/trocar abas com 9+ tabs.
-class Tab(MDFloatLayout, MDTabsBase):
+class Tab(FloatLayout, MDTabsBase):
     pass
 
 
@@ -162,8 +158,8 @@ class ILoLApp(MDApp):
 
         self.cfg = cfg_mod.carregar()
 
-        # Registra a fonte APÓS o Kivy estar completamente inicializado.
-        # Se falhar por qualquer razão, cai silenciosamente para "Roboto".
+        # Registra a fonte monoespaçada após o Kivy inicializar o SDL2/OpenGL.
+        # Chamar LabelBase.register no nível de módulo causava crash no Android.
         self._registrar_fonte()
 
         root = MDBoxLayout(orientation="vertical")
@@ -212,8 +208,8 @@ class ILoLApp(MDApp):
 
     def _registrar_fonte(self):
         """
-        Registra RobotoMono após o Kivy inicializar o sistema gráfico/SDL2.
-        Se o arquivo não existir ou o carregamento falhar, usa Roboto como fallback.
+        Registra RobotoMono após o Kivy inicializar o sistema gráfico.
+        Se o arquivo não existir ou falhar, usa Roboto como fallback silencioso.
         """
         global _MONO_FONT
         font_dir  = os.path.dirname(os.path.abspath(__file__))
@@ -258,6 +254,7 @@ class ILoLApp(MDApp):
             height=dp(36),
         ))
 
+        # API Key
         lay.add_widget(MDLabel(
             text="Riot API Key",
             font_style="Subtitle1",
@@ -265,6 +262,7 @@ class ILoLApp(MDApp):
             height=dp(28),
         ))
 
+        # Campo + botao olho na mesma linha
         api_row = BoxLayout(size_hint_y=None, height=dp(48), spacing=dp(8))
         self.api_field = MDTextField(
             text=self.cfg.get("api_key", ""),
@@ -284,6 +282,7 @@ class ILoLApp(MDApp):
         api_row.add_widget(self.btn_eye)
         lay.add_widget(api_row)
 
+        # Parametros numericos
         lay.add_widget(MDLabel(
             text="Parametros de Analise",
             font_style="Subtitle1",
@@ -292,7 +291,7 @@ class ILoLApp(MDApp):
         ))
 
         params = [
-            ("Preco minimo de item finalizado", "preco_core",         2000),
+            ("Preco minimo de item finalizado", "preco_core",        2000),
             ("Min. jogos — Analista vs Classe", "min_jogos_analista", 8),
             ("Min. jogos — Composicao",         "min_jogos_comp",     3),
             ("Min. jogos — Core Build",         "min_jogos_core",     2),
@@ -328,9 +327,8 @@ class ILoLApp(MDApp):
         for key, field in self.param_fields.items():
             self.cfg[key] = field.get()
         cfg_mod.salvar(self.cfg)
-        # Snackbar removido — API incompatível com KivyMD 1.2.0.
-        # O status_lbl já fornece o feedback necessário.
         self.status_lbl.text = "Configuracoes salvas!"
+        Snackbar(text="Configuracoes salvas com sucesso!").open()
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ABA: Banco — status por campeão
@@ -476,6 +474,7 @@ class ILoLApp(MDApp):
             height=dp(26),
         ))
 
+        # Grid 3 colunas — nomes de classe sao curtos, cabe bem
         self._ana_class = "Tank"
         self._ana_btns  = {}
         grid = GridLayout(cols=3, size_hint_y=None, height=dp(108), spacing=dp(6))
@@ -681,6 +680,10 @@ class ILoLApp(MDApp):
     # ─────────────────────────────────────────────────────────────────────────
 
     def _multi_classe_layout(self, btn_label: str, btn_callback):
+        """
+        Layout para Composicao / Core Build / Late Game.
+        Classes em lista vertical — uma por linha, sem corte de texto.
+        """
         sv = ScrollView()
         lay = MDBoxLayout(
             orientation="vertical",
@@ -706,6 +709,7 @@ class ILoLApp(MDApp):
 
         fields = {}
         for cl in CLASSES:
+            # Cada classe ocupa uma linha inteira — sem corte
             row = BoxLayout(
                 orientation="horizontal",
                 size_hint_y=None,
