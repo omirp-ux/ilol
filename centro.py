@@ -1,6 +1,6 @@
 """
 ARAM Analyst — Centro de Comando (Mobile/KivyMD)
-Execute com: python main.py
+Execute com: python centro.py
 """
 import sys
 import io
@@ -8,10 +8,8 @@ import os
 import json
 import threading
 import queue
-from collections import Counter
 
 from kivy.clock import Clock
-from kivy.core.text import LabelBase
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -34,10 +32,6 @@ import config as cfg_mod
 PASTA   = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
-# Nome da fonte monoespaçada. Registrada em build() após o Kivy inicializar.
-# Se o registro falhar, _registrar_fonte() atualiza para "Roboto" como fallback.
-_MONO_FONT = "RobotoMono"
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Widgets auxiliares
@@ -52,7 +46,6 @@ class LogOutput(ScrollView):
             halign="left",
             valign="top",
             font_size=sp(11),
-            font_name=_MONO_FONT,
             padding=(dp(8), dp(8)),
             color=(0.88, 0.88, 0.88, 1),
         )
@@ -158,9 +151,10 @@ class ILoLApp(MDApp):
 
         self.cfg = cfg_mod.carregar()
 
-        # Registra a fonte monoespaçada após o Kivy inicializar o SDL2/OpenGL.
-        # Chamar LabelBase.register no nível de módulo causava crash no Android.
-        self._registrar_fonte()
+        self.miner_stop   = threading.Event()
+        self.miner_pause  = threading.Event()
+        self.miner_log_q  = queue.Queue()
+        self.miner_thread = None
 
         root = MDBoxLayout(orientation="vertical")
         root.add_widget(MDTopAppBar(title="ARAM Analyst", elevation=4))
@@ -168,7 +162,7 @@ class ILoLApp(MDApp):
         tabs = MDTabs(allow_stretch=True, anim_duration=0.15)
         tab_defs = [
             ("Config",      self._build_tab_config),
-            ("Banco",       self._build_tab_banco),
+            ("Minerador",   self._build_tab_miner),
             ("Meta",        self._build_tab_meta),
             ("Analista",    self._build_tab_analista),
             ("Composicao",  self._build_tab_comp),
@@ -201,27 +195,11 @@ class ILoLApp(MDApp):
         status_row.add_widget(self.banco_lbl)
         root.add_widget(status_row)
 
+        Clock.schedule_interval(self._poll_miner_log, 0.15)
         Clock.schedule_interval(lambda dt: self._atualizar_banco(), 5)
         Clock.schedule_once(lambda dt: self._atualizar_banco(), 0.5)
 
         return root
-
-    def _registrar_fonte(self):
-        """
-        Registra RobotoMono após o Kivy inicializar o sistema gráfico.
-        Se o arquivo não existir ou falhar, usa Roboto como fallback silencioso.
-        """
-        global _MONO_FONT
-        font_dir  = os.path.dirname(os.path.abspath(__file__))
-        font_path = os.path.join(font_dir, "RobotoMono-Regular.ttf")
-        if os.path.exists(font_path):
-            try:
-                LabelBase.register(name="RobotoMono", fn_regular=font_path)
-                _MONO_FONT = "RobotoMono"
-            except Exception:
-                _MONO_FONT = "Roboto"
-        else:
-            _MONO_FONT = "Roboto"
 
     def _atualizar_banco(self, *a):
         from utils import contar_partidas
@@ -331,95 +309,144 @@ class ILoLApp(MDApp):
         Snackbar(text="Configuracoes salvas com sucesso!").open()
 
     # ─────────────────────────────────────────────────────────────────────────
-    #  ABA: Banco — status por campeão
+    #  ABA: Minerador
     # ─────────────────────────────────────────────────────────────────────────
 
-    def _build_tab_banco(self):
+    def _build_tab_miner(self):
         lay = MDBoxLayout(orientation="vertical", padding=dp(12), spacing=dp(8))
 
         ctrl = BoxLayout(size_hint_y=None, height=dp(52), spacing=dp(8))
-        ctrl.add_widget(MDLabel(
-            text="Min. registros:",
-            size_hint_x=0.45,
-            halign="left",
-            valign="middle",
-        ))
-        self.banco_min = IntField(min_val=1, max_val=9999, value=1, size_hint_x=0.30)
-        ctrl.add_widget(self.banco_min)
-        ctrl.add_widget(MDRaisedButton(
-            text="Atualizar",
-            size_hint_x=0.25,
-            on_release=self._run_banco,
-        ))
+        self.btn_start = MDRaisedButton(
+            text="Iniciar",
+            on_release=self._miner_start,
+        )
+        self.btn_pause = MDRaisedButton(
+            text="Pausar",
+            on_release=self._miner_toggle_pause,
+            disabled=True,
+        )
+        self.btn_stop = MDRaisedButton(
+            text="Parar",
+            on_release=self._miner_stop,
+            disabled=True,
+        )
+        ctrl.add_widget(self.btn_start)
+        ctrl.add_widget(self.btn_pause)
+        ctrl.add_widget(self.btn_stop)
         lay.add_widget(ctrl)
 
-        self.banco_status_out = LogOutput()
-        lay.add_widget(self.banco_status_out)
+        self.miner_status_lbl = MDLabel(
+            text="Minerador parado.",
+            size_hint_y=None,
+            height=dp(22),
+            font_style="Caption",
+        )
+        lay.add_widget(self.miner_status_lbl)
+
+        lay.add_widget(MDLabel(
+            text="Ao pausar, reparar_dados roda automaticamente.",
+            size_hint_y=None,
+            height=dp(20),
+            font_style="Caption",
+            theme_text_color="Secondary",
+        ))
+
+        lay.add_widget(MDLabel(
+            text="Log de Mineracao",
+            font_style="Subtitle2",
+            size_hint_y=None,
+            height=dp(24),
+        ))
+
+        self.miner_log = LogOutput()
+        lay.add_widget(self.miner_log)
+
+        lay.add_widget(MDFlatButton(
+            text="Limpar Log",
+            size_hint_y=None,
+            height=dp(40),
+            on_release=self.miner_log.clear,
+        ))
         return lay
 
-    def _run_banco(self, *a):
-        min_registros = self.banco_min.get()
+    def _miner_start(self, *a):
+        self.cfg = cfg_mod.carregar()
+        if not self.cfg.get("api_key"):
+            Snackbar(text="Configure a API Key antes de minerar!").open()
+            return
+        self.miner_stop.clear()
+        self.miner_pause.clear()
+        self.miner_thread = threading.Thread(
+            target=self._miner_worker, daemon=True
+        )
+        self.miner_thread.start()
+        self.btn_start.disabled = True
+        self.btn_pause.disabled = False
+        self.btn_stop.disabled  = False
+        self.miner_status_lbl.text = "[Minerando]"
 
-        def worker():
-            path = os.path.join(PASTA, "historico_partidas.json")
-            if not os.path.exists(path):
-                self.banco_status_out.set_text(
-                    "historico_partidas.json nao encontrado.\n"
-                    "Copie o arquivo do PC via USB."
-                )
-                self._done()
-                return
+    def _miner_toggle_pause(self, *a):
+        if self.miner_pause.is_set():
+            self.miner_pause.clear()
+            self.btn_pause.text = "Pausar"
+            self.miner_status_lbl.text = "[Minerando]"
+        else:
+            self.miner_pause.set()
+            self.btn_pause.text = "Retomar"
+            self.miner_status_lbl.text = "[Pausado] Reparando dados..."
+            threading.Thread(target=self._reparar_apos_pausa, daemon=True).start()
 
-            try:
-                with open(path, encoding="utf-8") as f:
-                    partidas = json.load(f)
-            except Exception as e:
-                self.banco_status_out.set_text(f"Erro ao ler o banco:\n{e}")
-                self._done()
-                return
+    def _reparar_apos_pausa(self):
+        self._log_miner("\n[Sistema] Pausa acionada — reparo preventivo iniciado...\n")
+        try:
+            from reparar_dados import reparar_json
+            reparar_json(log_func=self._log_miner)
+        except Exception as e:
+            self._log_miner(f"[Sistema] Erro no reparo: {e}\n")
+        Clock.schedule_once(
+            lambda dt: setattr(self.miner_status_lbl, "text", "[Pausado]"), 0
+        )
+        Clock.schedule_once(lambda dt: self._atualizar_banco(), 0)
 
-            from utils import normalizar_champ, carregar_display_names
-            display_names = carregar_display_names(PASTA)
+    def _miner_stop(self, *a):
+        self.miner_stop.set()
+        self.miner_pause.clear()
+        self._reset_miner_btns()
+        self.miner_status_lbl.text = "Minerador parado."
 
-            contagem = Counter()
-            for p in partidas:
-                if not isinstance(p, dict):
-                    continue
-                champ = p.get("meu_campeao", "")
-                if champ:
-                    norm    = normalizar_champ(champ)
-                    display = display_names.get(norm, champ)
-                    contagem[display] += 1
+    def _reset_miner_btns(self, *a):
+        def _do(dt):
+            self.btn_start.disabled = False
+            self.btn_pause.disabled = True
+            self.btn_pause.text     = "Pausar"
+            self.btn_stop.disabled  = True
+        Clock.schedule_once(_do, 0)
 
-            total_registros = sum(contagem.values())
-            total_champs    = len(contagem)
+    def _miner_worker(self):
+        from miner_auto import run_miner_loop
+        try:
+            run_miner_loop(
+                stop_event=self.miner_stop,
+                pause_event=self.miner_pause,
+                log_func=self._log_miner,
+            )
+        except Exception as e:
+            self._log_miner(f"[Erro fatal] {e}\n")
+        self._reset_miner_btns()
+        Clock.schedule_once(
+            lambda dt: setattr(self.miner_status_lbl, "text", "Minerador encerrado."), 0
+        )
+        Clock.schedule_once(lambda dt: self._atualizar_banco(), 0)
 
-            linhas = [
-                f"Total de registros : {total_registros:>9,}",
-                f"Campeoes distintos : {total_champs:>9,}",
-                f"Filtro minimo      : {min_registros:>9,}",
-                "=" * 35,
-                f"{'CAMPEAO':<22} {'REG':>6}  {'%':>5}",
-                "-" * 35,
-            ]
+    def _log_miner(self, text: str):
+        self.miner_log_q.put(text)
 
-            filtrados = [
-                (nome, cnt)
-                for nome, cnt in contagem.most_common()
-                if cnt >= min_registros
-            ]
-
-            if not filtrados:
-                linhas.append("(nenhum campeao acima do filtro)")
-            else:
-                for nome, cnt in filtrados:
-                    pct = cnt / total_registros * 100
-                    linhas.append(f"{nome:<22} {cnt:>6,}  {pct:>4.1f}%")
-
-            self.banco_status_out.set_text("\n".join(linhas))
-            self._done()
-
-        self._run_thread(worker, "Lendo banco de dados...")
+    def _poll_miner_log(self, dt):
+        try:
+            while True:
+                self.miner_log.append(self.miner_log_q.get_nowait())
+        except queue.Empty:
+            pass
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ABA: Meta
@@ -639,11 +666,12 @@ class ILoLApp(MDApp):
             "interrompido no meio de uma mineracao.\n\n"
             "- Arquivo corrompido e substituido automaticamente.\n"
             "- Backup criado como historico_partidas.bak.\n"
+            "- Ao pausar o Minerador, esta funcao roda automaticamente."
         )
         lay.add_widget(MDLabel(
             text=info,
             size_hint_y=None,
-            height=dp(130),
+            height=dp(160),
             halign="left",
         ))
 
