@@ -1,5 +1,6 @@
 import os
 import json
+import platform
 
 try:
     import migration
@@ -18,7 +19,16 @@ def get_pasta():
         return _migration_module.data_dir
     if app_struct is not None and hasattr(app_struct, "data_dir"):
         return app_struct.data_dir
-    return os.path.join(os.path.expanduser("~"), "iLoL")
+
+    system = platform.system()
+    if system == "Android":
+        from android.storage import app_storage_path
+
+        return app_storage_path()
+    elif system == "Linux":
+        return os.path.join(os.path.expanduser("~"), ".ilol")
+    else:
+        return os.path.join(os.path.expanduser("~"), "iLoL")
 
 
 PASTA = get_pasta()
