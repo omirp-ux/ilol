@@ -36,22 +36,11 @@ def _pedir_permissoes_android(callback):
         from android.permissions import Permission, request_permissions, check_permission
         from android.runnable import run_on_ui_thread
 
-        # Verifica se já temos permissão MANAGE_EXTERNAL_STORAGE
-        try:
-            if check_permission(Permission.MANAGE_EXTERNAL_STORAGE):
-                callback()
-                return
-            # Solicita MANAGE_EXTERNAL_STORAGE (Android 11+ ideal)
-            request_permissions([Permission.MANAGE_EXTERNAL_STORAGE], callback)
-        except AttributeError:
-            # Fallback: WRITE_EXTERNAL_STORAGE (suficiente para pasta específica)
-            if check_permission(Permission.WRITE_EXTERNAL_STORAGE):
-                callback()
-                return
-            request_permissions([Permission.WRITE_EXTERNAL_STORAGE], callback)
-
+        # Como Permission enum no P4A não tem MANAGE_EXTERNAL_STORAGE,
+        # pula checks e request direto (permissions já declaradas no manifest)
+        callback()
+        
     except ImportError:
-        # Não está no Android, executa direto
         callback()
 
 
@@ -184,23 +173,7 @@ class ILoLApp(MDApp):
         self.theme_cls.primary_palette = "Blue"
 
         # Carrega configurações (PASTA já foi inicializada após permissões)
-        def _safe_load_config(self):
-            """Safe config loader."""
-            try:
-                return cfg_mod.carregar()
-            except Exception as e:
-                print(f"Config load failed: {e}. Using defaults.")
-                return {
-                    "api_key": "",
-                    "preco_core": 2000,
-                    "min_jogos_analista": 8,
-                    "min_jogos_comp": 3,
-                    "min_jogos_core": 2,
-                    "min_jogos_late": 2,
-                    "min_aparicoes_meta": 15,
-                }
-        
-        self.cfg = self._safe_load_config()
+        self.cfg = cfg_mod.carregar()
         self.pasta = PASTA or ""
 
         root = MDBoxLayout(orientation="vertical")
