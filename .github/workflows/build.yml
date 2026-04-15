@@ -64,6 +64,12 @@ jobs:
         run: |
           mkdir -p ~/.android
           echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > ~/.android/debug.keystore
+          echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "ANDROID_KEYALIAS_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Configurar alias do keystore
+        run: |
+          sed -i "s/^android.keyalias.*/android.keyalias = ${{ secrets.KEY_ALIAS }}/" buildozer.spec
 
       # O version code sobe a cada build usando o número do run do GitHub.
       # O Android exige que atualizações tenham version code maior que o instalado.

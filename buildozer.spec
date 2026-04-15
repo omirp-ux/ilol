@@ -7,7 +7,10 @@ source.dir      = .
 source.include_exts = py,json,ttf
 source.include_patterns = campeoes.json,itens.json,RobotoMono-Regular.ttf
 
-version         = 1.0
+version         = 2.0.0
+
+android.keystore = ilol.keystore
+android.keyalias = ilol
 
 requirements =
     python3,
