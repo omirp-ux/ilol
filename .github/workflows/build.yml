@@ -1,5 +1,8 @@
 name: Build APK
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ main ]
@@ -13,6 +16,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -73,24 +78,32 @@ jobs:
 
       # O version code sobe a cada build usando o número do run do GitHub.
       # O Android exige que atualizações tenham version code maior que o instalado.
-      - name: Atualizar version code
+      - name: Atualizar version code para build
         run: |
-          grep -q "^android.numeric_version" buildozer.spec \
-            && sed -i "s/^android.numeric_version.*/android.numeric_version = ${{ github.run_number }}/" buildozer.spec \
-            || echo "android.numeric_version = ${{ github.run_number }}" >> buildozer.spec
+          # Extrair o version code atual e incrementar para este build
+          CURRENT_VERSION=$(grep "^android.numeric_version" buildozer.spec | awk '{print $3}')
+          BUILD_VERSION=$((CURRENT_VERSION + 1))
+          
+          # Atualizar temporariamente para o build
+          sed -i "s/^android.numeric_version.*/android.numeric_version = $BUILD_VERSION/" buildozer.spec
+          echo "Building with version code: $BUILD_VERSION"
 
       - name: Build APK
         run: |
           set -o pipefail
           buildozer -v android debug 2>&1 | tee build.log
 
-      - name: Atualizar version no repositório
+      - name: Atualizar version code no repositório
         if: success()
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          # Extrair o version code atual do spec
+          CURRENT_VERSION=$(grep "^android.numeric_version" buildozer.spec | awk '{print $3}')
+          
+          # Commit e push com token de autenticação
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add buildozer.spec
-          git commit -m "chore: increment version code to ${{ github.run_number }}"
+          git commit -m "chore: bump version code to $CURRENT_VERSION [skip ci]" || echo "No changes to commit"
           git push
 
       - name: Upload log
