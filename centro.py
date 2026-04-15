@@ -24,8 +24,11 @@ from kivymd.uix.toolbar import MDTopAppBar
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.tab import MDTabs, MDTabsBase
 
-from config import get_pasta
 import config as cfg_mod
+from config import get_pasta, init_dados, carregar
+
+init_dados()
+cfg_mod.carregar()
 
 PASTA = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]

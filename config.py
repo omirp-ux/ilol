@@ -64,8 +64,10 @@ def carregar():
             with open(ARQUIVO_CONFIG, "r", encoding="utf-8") as f:
                 return json.load(f)
         except (json.JSONDecodeError, IOError):
-            return PADRAO.copy()
-    return PADRAO.copy()
+            pass
+    config = PADRAO.copy()
+    salvar(config)
+    return config
 
 
 def salvar(config):
@@ -77,3 +79,32 @@ def salvar(config):
         return True
     except IOError:
         return False
+
+
+def init_dados():
+    import sys
+    import shutil
+
+    if not os.path.exists(PASTA):
+        os.makedirs(PASTA, exist_ok=True)
+
+    dados = ["itens.json", "Campeoes.json"]
+    base_dir = (
+        os.path.dirname(sys.modules["__main__"].__file__)
+        if "__main__" in sys.modules
+        else "."
+    )
+
+    for nome_arquivo in dados:
+        dest = os.path.join(PASTA, nome_arquivo)
+        if not os.path.exists(dest):
+            src = os.path.join(base_dir, nome_arquivo)
+            if os.path.exists(src):
+                shutil.copy2(src, dest)
+
+    hist_path = os.path.join(PASTA, "historico_partidas.json")
+    if not os.path.exists(hist_path):
+        import json
+
+        with open(hist_path, "w", encoding="utf-8") as f:
+            json.dump([], f)
