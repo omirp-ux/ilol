@@ -27,16 +27,14 @@ def get_pasta():
         PythonActivity = autoclass("org.kivy.android.PythonActivity")
         context = PythonActivity.mActivity
 
-        # Tenta pegar o caminho do armazenamento externo primário
+        # Tenta pegar o caminho do armazenamento externo primario
         external = context.getExternalFilesDir(None)
         if external is not None:
-            abs_path = external.getAbsolutePath()
             # O Android retorna algo como:
             # /storage/emulated/0/Android/data/com.ilol/files
-            # Substituímos para o root: /storage/emulated/0/iLoL
+            # Usamos o root: /storage/emulated/0/iLoL
             # para que o usuario acesse facilmente pelo gerenciador de arquivos
-            sdcard_root = "/storage/emulated/0"
-            return sdcard_root + "/iLoL"
+            return "/storage/emulated/0/iLoL"
 
     except Exception:
         pass
@@ -99,9 +97,9 @@ def init_dados():
     except Exception:
         pass
 
-    # Verifica se a pasta realmente existe após tentar criar
+    # Verifica se a pasta realmente existe apos tentar criar
     if not os.path.exists(PASTA):
-        return  # Se não conseguiu criar, retorna silenciosamente
+        return  # Se nao conseguiu criar, retorna silenciosamente
 
     dados = ["itens.json", "Campeoes.json"]
     base_dir = (
