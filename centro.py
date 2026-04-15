@@ -36,13 +36,19 @@ def _pedir_permissoes_android(callback):
         from android.permissions import Permission, request_permissions, check_permission
         from android.runnable import run_on_ui_thread
 
-        # Verifica se já temos permissão
-        if check_permission(Permission.MANAGE_EXTERNAL_STORAGE):
-            callback()
-            return
-
-        # Solicita MANAGE_EXTERNAL_STORAGE (acesso total ao armazenamento)
-        request_permissions([Permission.MANAGE_EXTERNAL_STORAGE], callback)
+        # Verifica se já temos permissão MANAGE_EXTERNAL_STORAGE
+        try:
+            if check_permission(Permission.MANAGE_EXTERNAL_STORAGE):
+                callback()
+                return
+            # Solicita MANAGE_EXTERNAL_STORAGE (Android 11+ ideal)
+            request_permissions([Permission.MANAGE_EXTERNAL_STORAGE], callback)
+        except AttributeError:
+            # Fallback: WRITE_EXTERNAL_STORAGE (suficiente para pasta específica)
+            if check_permission(Permission.WRITE_EXTERNAL_STORAGE):
+                callback()
+                return
+            request_permissions([Permission.WRITE_EXTERNAL_STORAGE], callback)
 
     except ImportError:
         # Não está no Android, executa direto
@@ -178,7 +184,24 @@ class ILoLApp(MDApp):
         self.theme_cls.primary_palette = "Blue"
 
         # Carrega configurações (PASTA já foi inicializada após permissões)
-        self.cfg = cfg_mod.carregar() if PASTA else {}
+        def _safe_load_config(self):
+            """Safe config loader."""
+            try:
+                return cfg_mod.carregar()
+            except Exception as e:
+                print(f"Config load failed: {e}. Using defaults.")
+                return {
+                    "api_key": "",
+                    "preco_core": 2000,
+                    "min_jogos_analista": 8,
+                    "min_jogos_comp": 3,
+                    "min_jogos_core": 2,
+                    "min_jogos_late": 2,
+                    "min_aparicoes_meta": 15,
+                }
+        
+        self.cfg = self._safe_load_config()
+        self.pasta = PASTA or ""
 
         root = MDBoxLayout(orientation="vertical")
         root.add_widget(MDTopAppBar(title="ARAM Analyst", elevation=4))
@@ -228,15 +251,14 @@ class ILoLApp(MDApp):
         try:
             from kivy.clock import Clock
             def _update(dt):
-                self.status_lbl.text = f"Pasta: {PASTA}"
+                self.status_lbl.text = f"Pasta: {self.pasta or 'N/A'}"
             Clock.schedule_once(_update, 0)
         except Exception:
             pass
 
     def _atualizar_banco(self, *a):
         from utils import contar_partidas
-
-        n = contar_partidas(PASTA)
+        n = contar_partidas(self.pasta) if self.pasta else -1
         if n == -1:
             self.banco_lbl.text = "Banco: CORROMPIDO"
         elif n == 0:
@@ -375,13 +397,21 @@ class ILoLApp(MDApp):
         return lay
 
     def _run_meta(self, *a):
+        top = self.meta_top.get()
+        if top < 1:
+            self.meta_out.set_text("Erro: Top deve ser pelo menos 1")
+            return
+        if not self.pasta:
+            self.meta_out.set_text("Erro: Pasta de dados nao inicializada")
+            return
+
         def worker():
-            self.cfg = cfg_mod.carregar()
+            cfg = cfg_mod.carregar() if self.pasta else self.cfg
             from top_meta import MetaAnalyzer
 
-            ana = MetaAnalyzer(min_aparicoes=self.cfg["min_aparicoes_meta"])
+            ana = MetaAnalyzer(min_aparicoes=cfg.get("min_aparicoes_meta", 15))
             self.meta_out.set_text(
-                self._capture(ana.gerar_tier_list, self.meta_top.get())
+                self._capture(ana.gerar_tier_list, top)
             )
             self._done()
 
@@ -444,13 +474,21 @@ class ILoLApp(MDApp):
             btn.md_bg_color = PRIMARY if cl == classe else DARK
 
     def _run_analista(self, *a):
+        champ = self.ana_champ.text.strip()
+        if not champ:
+            self.ana_out.set_text("Erro: Nome do campeao obrigatorio")
+            return
+        if not self.pasta:
+            self.ana_out.set_text("Erro: Pasta de dados nao inicializada")
+            return
+
         def worker():
-            self.cfg = cfg_mod.carregar()
+            cfg = cfg_mod.carregar() if self.pasta else self.cfg
             from analista import AnalistaPro
 
-            ana = AnalistaPro(min_jogos=self.cfg["min_jogos_analista"])
+            ana = AnalistaPro(min_jogos=cfg.get("min_jogos_analista", 8))
             self.ana_out.set_text(
-                self._capture(ana.analisar, self.ana_champ.text, self._ana_class)
+                self._capture(ana.analisar, champ, self._ana_class)
             )
             self._done()
 
@@ -471,14 +509,25 @@ class ILoLApp(MDApp):
         return lay
 
     def _run_comp(self, *a):
+        champ = self.comp_champ.text.strip()
+        comp = self._ler_comp(self.comp_fields)
+        if not champ:
+            self.comp_out.set_text("Erro: Nome do campeao obrigatorio")
+            return
+        if not comp:
+            self.comp_out.set_text("Erro: Defina pelo menos uma classe na composicao")
+            return
+        if not self.pasta:
+            self.comp_out.set_text("Erro: Pasta de dados nao inicializada")
+            return
+
         def worker():
-            self.cfg = cfg_mod.carregar()
+            cfg = cfg_mod.carregar() if self.pasta else self.cfg
             from analista2 import AnalistaComposicao
 
-            ana = AnalistaComposicao(min_jogos=self.cfg["min_jogos_comp"])
-            comp = self._ler_comp(self.comp_fields)
+            ana = AnalistaComposicao(min_jogos=cfg.get("min_jogos_comp", 3))
             self.comp_out.set_text(
-                self._capture(ana.analisar_comp, self.comp_champ.text, comp)
+                self._capture(ana.analisar_comp, champ, comp)
             )
             self._done()
 
@@ -499,14 +548,25 @@ class ILoLApp(MDApp):
         return lay
 
     def _run_core(self, *a):
+        champ = self.core_champ.text.strip()
+        comp = self._ler_comp(self.core_fields)
+        if not champ:
+            self.core_out.set_text("Erro: Nome do campeao obrigatorio")
+            return
+        if not comp:
+            self.core_out.set_text("Erro: Defina pelo menos uma classe na composicao")
+            return
+        if not self.pasta:
+            self.core_out.set_text("Erro: Pasta de dados nao inicializada")
+            return
+
         def worker():
-            self.cfg = cfg_mod.carregar()
+            cfg = cfg_mod.carregar() if self.pasta else self.cfg
             from core import CoreAnalyst
 
-            ana = CoreAnalyst(min_comb=self.cfg["min_jogos_core"])
-            comp = self._ler_comp(self.core_fields)
+            ana = CoreAnalyst(min_comb=cfg.get("min_jogos_core", 2))
             self.core_out.set_text(
-                self._capture(ana.analisar_core, self.core_champ.text, comp)
+                self._capture(ana.analisar_core, champ, comp)
             )
             self._done()
 
@@ -527,14 +587,25 @@ class ILoLApp(MDApp):
         return lay
 
     def _run_late(self, *a):
+        champ = self.late_champ.text.strip()
+        comp = self._ler_comp(self.late_fields)
+        if not champ:
+            self.late_out.set_text("Erro: Nome do campeao obrigatorio")
+            return
+        if not comp:
+            self.late_out.set_text("Erro: Defina pelo menos uma classe na composicao")
+            return
+        if not self.pasta:
+            self.late_out.set_text("Erro: Pasta de dados nao inicializada")
+            return
+
         def worker():
-            self.cfg = cfg_mod.carregar()
+            cfg = cfg_mod.carregar() if self.pasta else self.cfg
             from late import LateGameAnalyst
 
-            ana = LateGameAnalyst(min_jogos=self.cfg["min_jogos_late"])
-            comp = self._ler_comp(self.late_fields)
+            ana = LateGameAnalyst(min_jogos=cfg.get("min_jogos_late", 2))
             self.late_out.set_text(
-                self._capture(ana.analisar_late_game, self.late_champ.text, comp)
+                self._capture(ana.analisar_late_game, champ, comp)
             )
             self._done()
 
@@ -566,12 +637,20 @@ class ILoLApp(MDApp):
         return lay
 
     def _run_spike(self, *a):
+        champ = self.spike_champ.text.strip()
+        if not champ:
+            self.spike_out.set_text("Erro: Nome do campeao obrigatorio")
+            return
+        if not self.pasta:
+            self.spike_out.set_text("Erro: Pasta de dados nao inicializada")
+            return
+
         def worker():
             from powerspike import PowerSpikeAnalyst
 
             ana = PowerSpikeAnalyst()
             self.spike_out.set_text(
-                self._capture(ana.analisar_curva_de_poder, self.spike_champ.text)
+                self._capture(ana.analisar_curva_de_poder, champ)
             )
             self._done()
 
@@ -684,7 +763,13 @@ def _run_app(*args):
 
 
 if __name__ == "__main__":
-    _pedir_permissoes_android(_run_app)
+    try:
+        _pedir_permissoes_android(_run_app)
+    except:
+        _run_app()  # Fallback for desktop/non-android
 else:
     # Quando importado como módulo (ex: buildozer)
-    _pedir_permissoes_android(_run_app)
+    try:
+        _pedir_permissoes_android(_run_app)
+    except:
+        _run_app()  # Fallback for desktop/non-android
