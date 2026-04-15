@@ -1,0 +1,13 @@
+# Development notes
+DEVELOPMENT.md
+
+# Keystore
+ilol.keystore
+*.keystore
+
+# Build cache
+__pycache__/
+*.pyc
+build/
+dist/
+*.egg-info/
