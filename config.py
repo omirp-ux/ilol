@@ -64,12 +64,18 @@ PADRAO = {
 
 def carregar():
     if not os.path.exists(PASTA):
-        os.makedirs(PASTA, exist_ok=True)
+        try:
+            os.makedirs(PASTA, exist_ok=True)
+        except PermissionError:
+            # Sem permissão - retorna config padrão sem salvar
+            return PADRAO.copy()
+        except Exception:
+            return PADRAO.copy()
     if os.path.exists(ARQUIVO_CONFIG):
         try:
             with open(ARQUIVO_CONFIG, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except (json.JSONDecodeError, IOError):
+        except (json.JSONDecodeError, IOError, PermissionError):
             pass
     config = PADRAO.copy()
     salvar(config)
@@ -78,12 +84,17 @@ def carregar():
 
 def salvar(config):
     if not os.path.exists(PASTA):
-        os.makedirs(PASTA, exist_ok=True)
+        try:
+            os.makedirs(PASTA, exist_ok=True)
+        except PermissionError:
+            return False
+        except Exception:
+            return False
     try:
         with open(ARQUIVO_CONFIG, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=4, ensure_ascii=False)
         return True
-    except IOError:
+    except (IOError, PermissionError):
         return False
 
 

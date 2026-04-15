@@ -27,24 +27,34 @@ from kivymd.uix.tab import MDTabs, MDTabsBase
 import config as cfg_mod
 from config import get_pasta, init_dados, carregar
 
-PASTA = get_pasta()
+PASTA = None
 
 
-def _pedir_permissoes_android():
+def _pedir_permissoes_android(callback):
     """Solicita permissões de armazenamento em runtime (Android 11+)."""
     try:
-        from android.permissions import Permission, request_permissions
-        request_permissions([
-            Permission.READ_EXTERNAL_STORAGE,
-            Permission.WRITE_EXTERNAL_STORAGE,
-        ])
+        from android.permissions import Permission, request_permissions, check_permission
+        from android.runnable import run_on_ui_thread
+
+        # Verifica se já temos permissão
+        if check_permission(Permission.MANAGE_EXTERNAL_STORAGE):
+            callback()
+            return
+
+        # Solicita MANAGE_EXTERNAL_STORAGE (acesso total ao armazenamento)
+        request_permissions([Permission.MANAGE_EXTERNAL_STORAGE], callback)
+
     except ImportError:
-        pass
+        # Não está no Android, executa direto
+        callback()
 
 
-_pedir_permissoes_android()
-init_dados()
-cfg_mod.carregar()
+def _inicializar_app():
+    """Inicializa o app após permissões serem concedidas."""
+    global PASTA
+    PASTA = get_pasta()
+    init_dados()
+    cfg_mod.carregar()
 
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
@@ -167,7 +177,8 @@ class ILoLApp(MDApp):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Blue"
 
-        self.cfg = cfg_mod.carregar()
+        # Carrega configurações (PASTA já foi inicializada após permissões)
+        self.cfg = cfg_mod.carregar() if PASTA else {}
 
         root = MDBoxLayout(orientation="vertical")
         root.add_widget(MDTopAppBar(title="ARAM Analyst", elevation=4))
@@ -666,5 +677,14 @@ class ILoLApp(MDApp):
 #  Entry point
 # ─────────────────────────────────────────────────────────────────────────────
 
-if __name__ == "__main__":
+def _run_app(*args):
+    """Entry point após permissões concedidas."""
+    _inicializar_app()
     ILoLApp().run()
+
+
+if __name__ == "__main__":
+    _pedir_permissoes_android(_run_app)
+else:
+    # Quando importado como módulo (ex: buildozer)
+    _pedir_permissoes_android(_run_app)

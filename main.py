@@ -40,8 +40,8 @@ def mostrar_erro(erro):
 
 
 try:
-    from centro import ILoLApp
-    ILoLApp().run()
+    from centro import _pedir_permissoes_android, _run_app
+    _pedir_permissoes_android(_run_app)
 except Exception:
     erro = traceback.format_exc()
     salvar_crash(erro)

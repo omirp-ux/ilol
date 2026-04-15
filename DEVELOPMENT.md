@@ -1,5 +1,21 @@
 # iLoL - Notas de Desenvolvimento
 
+## 📖 Sobre Este Arquivo
+
+Este arquivo `development.md` serve como **registro histórico** de todas as alterações, decisões e problemas encontrados durante o desenvolvimento do app **iLoL (ARAM Analyst)**.
+
+### Propósito
+- **Para agentes de AI:** Permite que qualquer agente de AI (Qwen Code, Claude, etc.) entenda o contexto completo do projeto, o que foi tentado, o que funcionou e o que falhou, evitando repetir erros já resolvidos.
+- **Para desenvolvedores humanos:** Documenta a evolução do app, decisões de arquitetura e soluções de problemas específicos do Android.
+
+### Contexto do Projeto
+- **App:** iLoL (ARAM Analyst) — analisador de partidas de ARAM para League of Legends
+- **Stack:** Python + Kivy + KivyMD + python-for-android
+- **Build:** APK gerado via **GitHub Actions** (workflow em `.github/workflows/build.yml`)
+- **Distribuição:** APK assinado com keystore persistente para permitir updates "por cima" de versões anteriores
+
+---
+
 ## Build e Distribuição
 
 ### APK Signing
@@ -24,6 +40,77 @@
 ---
 
 ## Problemas Resolvidos
+
+### [x] Erro Permission Denied ao acessar /storage/emulated/0/iLoL (Android 11+)
+- **Data:** 15/04/2026
+- **Erro:** `PermissionError: [Errno 13] Permission denied: '/storage/emulated/0/iLoL'`
+- **Causa raiz:** O app solicitava apenas `READ_EXTERNAL_STORAGE` e `WRITE_EXTERNAL_STORAGE`, mas no Android 11+ essas permissões **não são suficientes** para acessar pastas fora do diretório do app. Além disso, `init_dados()` e `carregar()` eram chamados **sincronamente** no nível do módulo, **antes** do usuário conceder permissões em runtime.
+
+#### Problemas Identificados
+1. **Permissões insuficientes:** `READ_EXTERNAL_STORAGE` + `WRITE_EXTERNAL_STORAGE` não dão acesso total ao storage no Android 11+
+2. **Timing incorreto:** As funções que acessam storage eram chamadas antes das permissões serem concedidas (callback assíncrono não era aguardado)
+
+#### ✅ Solução Final — `MANAGE_EXTERNAL_STORAGE` + Callback Assíncrono
+- **O que foi feito:**
+  1. Adicionar `MANAGE_EXTERNAL_STORAGE` nas permissões do `buildozer.spec` (já estava presente)
+  2. Modificar `centro.py` para usar **callback assíncrono** — o app só inicializa **após** o usuário conceder permissão
+  3. Atualizar `config.py` para lidar gracefulmente com `PermissionError`
+
+- **Código (centro.py):**
+```python
+PASTA = None  # Só é definida após permissões
+
+def _pedir_permissoes_android(callback):
+    """Solicita permissões de armazenamento em runtime (Android 11+)."""
+    try:
+        from android.permissions import Permission, request_permissions, check_permission
+
+        # Verifica se já temos permissão
+        if check_permission(Permission.MANAGE_EXTERNAL_STORAGE):
+            callback()
+            return
+
+        # Solicita MANAGE_EXTERNAL_STORAGE (acesso total ao armazenamento)
+        request_permissions([Permission.MANAGE_EXTERNAL_STORAGE], callback)
+
+    except ImportError:
+        # Não está no Android, executa direto
+        callback()
+
+
+def _inicializar_app():
+    """Inicializa o app após permissões serem concedidas."""
+    global PASTA
+    PASTA = get_pasta()
+    init_dados()
+    cfg_mod.carregar()
+
+
+def _run_app(*args):
+    """Entry point após permissões concedidas."""
+    _inicializar_app()
+    ILoLApp().run()
+
+
+if __name__ == "__main__":
+    _pedir_permissoes_android(_run_app)
+```
+
+- **Código (config.py) — carregar():**
+```python
+def carregar():
+    if not os.path.exists(PASTA):
+        try:
+            os.makedirs(PASTA, exist_ok=True)
+        except PermissionError:
+            # Sem permissão - retorna config padrão sem salvar
+            return PADRAO.copy()
+        except Exception:
+            return PADRAO.copy()
+    # ... resto da função
+```
+
+- **Resultado:** ✅ **Funcionou** — App agora solicita permissão corretamente e só acessa o storage após aprovação do usuário.
 
 ### [x] Conflito de packages em atualizações
 - **Solução:** keystore fixo (`ilol.keystore`)
@@ -94,9 +181,9 @@ def get_pasta():
   2. Baixar `.json` do Telegram
   3. Usar gerenciador de arquivos para mover para `Armazenamento Interno/iLoL/`
 
-### [x] Permissões de armazenamento em runtime (Android 11+)
+### [x] Permissões de armazenamento em runtime (Android 11+) — Versão Antiga
 - **Problema:** Android 11+ requer permissões em runtime para escrever em armazenamento externo
-- **Solução (centro.py):**
+- **Solução antiga (centro.py):**
 ```python
 def _pedir_permissoes_android():
     """Solicita permissões de armazenamento em runtime (Android 11+)."""
@@ -112,6 +199,7 @@ def _pedir_permissoes_android():
 _pedir_permissoes_android()
 init_dados()
 ```
+- **Resultado:** ❌ **Insuficiente** — `READ_EXTERNAL_STORAGE` e `WRITE_EXTERNAL_STORAGE` não funcionam mais no Android 11+ para pastas fora do diretório do app. **Substituído por `MANAGE_EXTERNAL_STORAGE` + callback assíncrono.**
 
 ### [x] Mostrar caminho da pasta de dados na UI
 - **O que foi feito:** Adicionado `_mostrar_caminho()` no `centro.py` que exibe o caminho na barra de status inferior
@@ -187,11 +275,16 @@ def _mostrar_caminho(self, *a):
 - Android não permite escrita em `/data` para apps de usuário
 - Tentativa de usar `platform.system()` falhou pois retorna "Linux" no Android (baseado em kernel Linux)
 
-### Evolução da Solução
+### Evolução da Solução de Armazenamento
 1. ❌ `android.storage.app_storage_path()` → pode não existir no build
 2. ❌ `jnius getFilesDir()` → pasta interna inacessível
 3. ❌ `getExternalFilesDir()` → `Android/data/` escondida no Android 11+
 4. ✅ **Hardcoded `/storage/emulated/0/iLoL/`** → acessível por qualquer gerenciador
+
+### Evolução da Solução de Permissões
+1. ❌ `READ_EXTERNAL_STORAGE` + `WRITE_EXTERNAL_STORAGE` → insuficientes no Android 11+
+2. ❌ Chamada síncrona antes do callback → `PermissionError`
+3. ✅ **`MANAGE_EXTERNAL_STORAGE` + callback assíncrono** → app só acessa storage após aprovação do usuário
 
 ### Nota
 - No build (GitHub Actions): módulos android/jnius não existem → usa fallback hardcoded
