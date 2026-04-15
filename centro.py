@@ -27,10 +27,25 @@ from kivymd.uix.tab import MDTabs, MDTabsBase
 import config as cfg_mod
 from config import get_pasta, init_dados, carregar
 
+PASTA = get_pasta()
+
+
+def _pedir_permissoes_android():
+    """Solicita permissões de armazenamento em runtime (Android 11+)."""
+    try:
+        from android.permissions import Permission, request_permissions
+        request_permissions([
+            Permission.READ_EXTERNAL_STORAGE,
+            Permission.WRITE_EXTERNAL_STORAGE,
+        ])
+    except ImportError:
+        pass
+
+
+_pedir_permissoes_android()
 init_dados()
 cfg_mod.carregar()
 
-PASTA = get_pasta()
 CLASSES = ["Tank", "Assassin", "Mage", "Marksman", "Fighter", "Support"]
 
 
@@ -193,8 +208,19 @@ class ILoLApp(MDApp):
 
         Clock.schedule_interval(lambda dt: self._atualizar_banco(), 5)
         Clock.schedule_once(lambda dt: self._atualizar_banco(), 0.5)
+        Clock.schedule_once(lambda dt: self._mostrar_caminho(), 1.0)
 
         return root
+
+    def _mostrar_caminho(self, *a):
+        """Mostra o caminho da pasta de dados na tela."""
+        try:
+            from kivy.clock import Clock
+            def _update(dt):
+                self.status_lbl.text = f"Pasta: {PASTA}"
+            Clock.schedule_once(_update, 0)
+        except Exception:
+            pass
 
     def _atualizar_banco(self, *a):
         from utils import contar_partidas

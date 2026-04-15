@@ -19,22 +19,30 @@ def get_pasta():
     if app_struct is not None and hasattr(app_struct, "data_dir"):
         return app_struct.data_dir
 
-    try:
-        from android.storage import app_storage_path
-
-        return app_storage_path()
-    except (ImportError, AttributeError):
-        pass
-
+    # No Android, usa uma pasta no root do armazenamento interno
+    # para que o usuario consiga copiar arquivos manualmente
     try:
         from jnius import autoclass
 
         PythonActivity = autoclass("org.kivy.android.PythonActivity")
-        return PythonActivity.mActivity.getFilesDir().getAbsolutePath()
-    except (ImportError, AttributeError):
+        context = PythonActivity.mActivity
+
+        # Tenta pegar o caminho do armazenamento externo primário
+        external = context.getExternalFilesDir(None)
+        if external is not None:
+            abs_path = external.getAbsolutePath()
+            # O Android retorna algo como:
+            # /storage/emulated/0/Android/data/com.ilol/files
+            # Substituímos para o root: /storage/emulated/0/iLoL
+            # para que o usuario acesse facilmente pelo gerenciador de arquivos
+            sdcard_root = "/storage/emulated/0"
+            return sdcard_root + "/iLoL"
+
+    except Exception:
         pass
 
-    return os.path.join(os.path.expanduser("~"), "iLoL")
+    # Fallback direto
+    return "/storage/emulated/0/iLoL"
 
 
 PASTA = get_pasta()
@@ -85,8 +93,15 @@ def init_dados():
     import sys
     import shutil
 
-    if not os.path.exists(PASTA):
+    # Garante que a pasta existe (funciona em qualquer Android)
+    try:
         os.makedirs(PASTA, exist_ok=True)
+    except Exception:
+        pass
+
+    # Verifica se a pasta realmente existe após tentar criar
+    if not os.path.exists(PASTA):
+        return  # Se não conseguiu criar, retorna silenciosamente
 
     dados = ["itens.json", "Campeoes.json"]
     base_dir = (
@@ -103,9 +118,9 @@ def init_dados():
                 try:
                     shutil.copy2(src, dest)
                 except PermissionError:
-                    # No Android, copy2 pode falhar ao copiar metadados
-                    # Fallback para copy que nao copia atributos estendidos
                     shutil.copy(src, dest)
+                except Exception:
+                    pass
 
     hist_path = os.path.join(PASTA, "historico_partidas.json")
     if not os.path.exists(hist_path):
