@@ -1,6 +1,5 @@
 import os
 import json
-import platform
 
 try:
     import migration
@@ -20,15 +19,22 @@ def get_pasta():
     if app_struct is not None and hasattr(app_struct, "data_dir"):
         return app_struct.data_dir
 
-    system = platform.system()
-    if system == "Android":
+    try:
         from android.storage import app_storage_path
 
         return app_storage_path()
-    elif system == "Linux":
-        return os.path.join(os.path.expanduser("~"), ".ilol")
-    else:
-        return os.path.join(os.path.expanduser("~"), "iLoL")
+    except (ImportError, AttributeError):
+        pass
+
+    try:
+        from jnius import autoclass
+
+        PythonActivity = autoclass("org.kivy.android.PythonActivity")
+        return PythonActivity.mActivity.getFilesDir().getAbsolutePath()
+    except (ImportError, AttributeError):
+        pass
+
+    return os.path.join(os.path.expanduser("~"), "iLoL")
 
 
 PASTA = get_pasta()
