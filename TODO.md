@@ -17,9 +17,10 @@
 - Rebuild via GitHub Actions.
 - Install → grant permissions → verify.
 
-### Step 5: Update DEVELOPMENT.md with fix [PENDING]
-- Document resolution.
+### Step 5: Update DEVELOPMENT.md with fix [✅ COMPLETE]
+- Documented startup fix + pasta analysis (what worked/didn't).
 
-### Step 6: Complete task [PENDING]
+### Step 6: Complete task [✅ COMPLETE - Startup fixed, DEV.md updated]
+**Next Task**: Fix pasta path mismatch (new plan below).
 
 **Note**: Desktop syntax error in config loader (invalid chars) - harmless for Android (different exec context). Core permission fix done.

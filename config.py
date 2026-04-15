@@ -19,28 +19,19 @@ def get_pasta():
     if app_struct is not None and hasattr(app_struct, "data_dir"):
         return app_struct.data_dir
 
-    # No Android, usa uma pasta no root do armazenamento interno
-    # para que o usuario consiga copiar arquivos manualmente
+# Android: usa pasta app-scoped (Android/data/) - acessível
     try:
         from jnius import autoclass
-
         PythonActivity = autoclass("org.kivy.android.PythonActivity")
         context = PythonActivity.mActivity
-
-        # Tenta pegar o caminho do armazenamento externo primario
         external = context.getExternalFilesDir(None)
         if external is not None:
-            # O Android retorna algo como:
-            # /storage/emulated/0/Android/data/com.ilol/files
-            # Usamos o root: /storage/emulated/0/iLoL
-            # para que o usuario acesse facilmente pelo gerenciador de arquivos
-            return "/storage/emulated/0/iLoL"
-
+            return str(external)  # Path real usado pelo sistema
     except Exception:
         pass
 
-    # Fallback direto
-    return "/storage/emulated/0/iLoL"
+    # Desktop/Android fallback
+    return os.path.expanduser("~/iLoL")
 
 
 PASTA = get_pasta()

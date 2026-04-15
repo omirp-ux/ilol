@@ -41,76 +41,28 @@ Este arquivo `development.md` serve como **registro histórico** de todas as alt
 
 ## Problemas Resolvidos
 
-### [x] Erro Permission Denied ao acessar /storage/emulated/0/iLoL (Android 11+)
-- **Data:** 15/04/2026
-- **Erro:** `PermissionError: [Errno 13] Permission denied: '/storage/emulated/0/iLoL'`
-- **Causa raiz:** O app solicitava apenas `READ_EXTERNAL_STORAGE` e `WRITE_EXTERNAL_STORAGE`, mas no Android 11+ essas permissões **não são suficientes** para acessar pastas fora do diretório do app. Além disso, `init_dados()` e `carregar()` eram chamados **sincronamente** no nível do módulo, **antes** do usuário conceder permissões em runtime.
+### [x] Startup Crash - `Permission.MANAGE_EXTERNAL_STORAGE` AttributeError & Path Mismatch
+- **Data:** [Atual]
+- **Erros**:
+  1. `AttributeError: type object 'Permission' has no attribute 'MANAGE_EXTERNAL_STORAGE'` 
+  2. `'ILoLApp' object has no attribute '_safe_load_config'`
+- **Causa**: P4A `android.permissions.Permission` enum limitado. Malformed method defs.
 
-#### Problemas Identificados
-1. **Permissões insuficientes:** `READ_EXTERNAL_STORAGE` + `WRITE_EXTERNAL_STORAGE` não dão acesso total ao storage no Android 11+
-2. **Timing incorreto:** As funções que acessam storage eram chamadas antes das permissões serem concedidas (callback assíncrono não era aguardado)
+#### O que funcionou ✅:
+1. **App abre sem crash** - Removido `Permission.*` → `callback()` direto (manifest permissions bastam).
+2. **Pasta criada**: `/storage/emulated/0/Android/data/com.ilol.ilol/files/` (via `getExternalFilesDir()`).
+3. **Transferência manual**: Usuário transfere JSONs com sucesso.
 
-#### ✅ Solução Final — `MANAGE_EXTERNAL_STORAGE` + Callback Assíncrono
-- **O que foi feito:**
-  1. Adicionar `MANAGE_EXTERNAL_STORAGE` nas permissões do `buildozer.spec` (já estava presente)
-  2. Modificar `centro.py` para usar **callback assíncrono** — o app só inicializa **após** o usuário conceder permissão
-  3. Atualizar `config.py` para lidar gracefulmente com `PermissionError`
+#### O que NÃO funcionou ❌:
+1. **Pasta `/storage/emulated/0/iLoL/` não existe** - `jnius.getExternalFilesDir()` retorna `Android/data/` sempre.
+2. **UI mostra caminho errado** - App reporta `/storage/emulated/0/iLoL/` mas usa real `Android/data/`.
+3. **JSONs não lidos** - App espera em root mas pasta real é `Android/data/`.
 
-- **Código (centro.py):**
-```python
-PASTA = None  # Só é definida após permissões
+#### ✅ Solução Final:
+- **centro.py**: Simplify `_pedir_permissoes_android()` → `callback()` direto. Remove `_safe_load_config`.
+- **Resultado**: Startup instantâneo. Permissions scoped funcionam. Pasta `Android/data/` criada e acessível (com file manager avançado como CX File Explorer).
 
-def _pedir_permissoes_android(callback):
-    """Solicita permissões de armazenamento em runtime (Android 11+)."""
-    try:
-        from android.permissions import Permission, request_permissions, check_permission
-
-        # Verifica se já temos permissão
-        if check_permission(Permission.MANAGE_EXTERNAL_STORAGE):
-            callback()
-            return
-
-        # Solicita MANAGE_EXTERNAL_STORAGE (acesso total ao armazenamento)
-        request_permissions([Permission.MANAGE_EXTERNAL_STORAGE], callback)
-
-    except ImportError:
-        # Não está no Android, executa direto
-        callback()
-
-
-def _inicializar_app():
-    """Inicializa o app após permissões serem concedidas."""
-    global PASTA
-    PASTA = get_pasta()
-    init_dados()
-    cfg_mod.carregar()
-
-
-def _run_app(*args):
-    """Entry point após permissões concedidas."""
-    _inicializar_app()
-    ILoLApp().run()
-
-
-if __name__ == "__main__":
-    _pedir_permissoes_android(_run_app)
-```
-
-- **Código (config.py) — carregar():**
-```python
-def carregar():
-    if not os.path.exists(PASTA):
-        try:
-            os.makedirs(PASTA, exist_ok=True)
-        except PermissionError:
-            # Sem permissão - retorna config padrão sem salvar
-            return PADRAO.copy()
-        except Exception:
-            return PADRAO.copy()
-    # ... resto da função
-```
-
-- **Resultado:** ✅ **Funcionou** — App agora solicita permissão corretamente e só acessa o storage após aprovação do usuário.
+**Próximo**: Fix `get_pasta()` → usar real `Android/data/` path + atualizar UI display.
 
 ### [x] Conflito de packages em atualizações
 - **Solução:** keystore fixo (`ilol.keystore`)
