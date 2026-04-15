@@ -100,7 +100,12 @@ def init_dados():
         if not os.path.exists(dest):
             src = os.path.join(base_dir, nome_arquivo)
             if os.path.exists(src):
-                shutil.copy2(src, dest)
+                try:
+                    shutil.copy2(src, dest)
+                except PermissionError:
+                    # No Android, copy2 pode falhar ao copiar metadados
+                    # Fallback para copy que nao copia atributos estendidos
+                    shutil.copy(src, dest)
 
     hist_path = os.path.join(PASTA, "historico_partidas.json")
     if not os.path.exists(hist_path):
