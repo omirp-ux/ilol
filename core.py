@@ -7,7 +7,6 @@ import config as cfg_mod
 from utils import normalizar_champ
 
 from config import get_pasta
-PASTA = get_pasta()
 
 class CoreAnalyst:
     def __init__(self, min_comb=2):

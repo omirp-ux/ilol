@@ -6,7 +6,6 @@ import config as cfg_mod
 from utils import normalizar_champ, carregar_display_names
 
 from config import get_pasta
-PASTA = get_pasta()
 MAPA_CLASSE = {
     "1": "Tank", "2": "Assassin", "3": "Mage",
     "4": "Marksman", "5": "Fighter", "6": "Support"
